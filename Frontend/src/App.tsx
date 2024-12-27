@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import "./App.css";
+// import "./App.css";
 import Home from "./pages/Home/Home";
 import QuizEditor from "./pages/QuizEditor/QuizEditor";
 import NoPage from "./pages/NoPage/NoPage";
