@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import QuizEditor from "./pages/QuizEditor/QuizEditor";
 import NoPage from "./pages/NoPage/NoPage";
+import LoginPage from "./pages/LoginAndRegister/LoginPage.tsx";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/editor" element={<QuizEditor />} />
                     {/* <Route path="/quiz/:id" element={<Quiz />} /> */}
+                    <Route path="/login"  element={<LoginPage />} />
                     <Route path="*" element={<NoPage />} />
                 </Routes>
             </BrowserRouter>
