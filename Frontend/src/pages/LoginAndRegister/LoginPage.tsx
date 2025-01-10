@@ -1,14 +1,18 @@
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, Layout} from "antd";
+
+import styles from './LoginPage.module.css'
 
 const LoginPage = () => {
     return (
-    <div className="login-container">
-        <div className="logo-section">
-            <div className="logo">Logo-placeholder</div>
+    <Layout>
+
+    <div className={styles.loginPage} >
+        <div className={styles.logoSection}>
+            <div className={styles.logo}>Logo-placeholder</div>
         </div>
 
-        <div className="login-container">
-            <h2>Zaloguj się</h2>
+        <div className={styles.loginContainer}>
+            <h1 className={styles.loginHeader}>Zaloguj się</h1>
             <Form
                 name="login-form"
                 layout="vertical"
@@ -28,13 +32,14 @@ const LoginPage = () => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" >
+                    <Button type="primary" htmlType="submit" className="loginButton">
                         Zaloguj się
                     </Button>
                 </Form.Item>
             </Form>
         </div>
     </div>
+    </Layout>
     )
 }
 

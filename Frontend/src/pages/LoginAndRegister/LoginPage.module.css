@@ -1,0 +1,46 @@
+
+.logo {
+    width: 200px;
+    height: 200px;
+    background-color: lightgray;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.logoSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    background-color: #fadb14;
+    height: 100vh;
+    padding: 10px;
+    margin: auto;
+}
+
+.loginPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.loginHeader {
+    margin:40px;
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 50vw;
+    height: 100vh;
+}
+
+.loginButton {
+    display: flex;
+    justify-content: center;
+}
