@@ -1,3 +1,9 @@
+.loginPage {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 
 .logo {
     width: 200px;
@@ -20,14 +26,10 @@
     margin: auto;
 }
 
-.loginPage {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
 
 .loginHeader {
-    margin:40px;
+    margin:5vh;
+    font-size: 8vh;
 }
 
 .loginContainer {
@@ -41,6 +43,5 @@
 }
 
 .loginButton {
-    display: flex;
-    justify-content: center;
+    margin-top: 2vh;
 }

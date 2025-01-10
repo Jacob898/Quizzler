@@ -17,22 +17,22 @@ const LoginPage = () => {
                 name="login-form"
                 layout="vertical"
             >
-                <Form.Item label="username"
-                           name="username"
+                <Form.Item label="Nazwa Użytkownika"
+                           name="Nazwa Użytkownika"
                            rules={[{required: true, message:"Nazwa użytkownika jest wymagana"}]}
                 >
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="password"
-                    name="password"
+                <Form.Item label="Hasło"
+                    name="Hasło"
                     rules={[{required: true, message:"Hasło jest wymagane"}]}
                 >
                     <Input.Password />
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="loginButton">
+                    <Button type="primary" htmlType="submit" className={styles.loginButton}>
                         Zaloguj się
                     </Button>
                 </Form.Item>
