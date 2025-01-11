@@ -25,8 +25,29 @@ const RegisterPage = () => {
                         </Form.Item>
 
                         <Form.Item label="Hasło"
-                                   name="Hasło"
+                                   name="password"
                                    rules={[{required: true, message:"Hasło jest wymagane"}]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+
+                        <Form.Item label="Powtórz Hasło"
+                                   name = "confirm password"
+                                   dependencies={['password']}
+                                   rules ={[
+                                       {
+                                           required: true,
+                                           message: "Powtórzenie hasła jest wymagane",
+                                       },
+                                       ({ getFieldValue }) => ({
+                                           validator(_, value) {
+                                               if (!value || getFieldValue('password') === value) {
+                                                   return Promise.resolve();
+                                               }
+                                               return Promise.reject(new Error("Wpisane hasła się nie zgadzają"));
+                                           }
+                                       })
+                                   ]}
                         >
                             <Input.Password />
                         </Form.Item>
