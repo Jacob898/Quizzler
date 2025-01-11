@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import QuizEditor from "./pages/QuizEditor/QuizEditor";
 import NoPage from "./pages/NoPage/NoPage";
 import LoginPage from "./pages/LoginAndRegister/LoginPage.tsx";
+import RegisterPage from "./pages/LoginAndRegister/RegisterPage.tsx";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/editor" element={<QuizEditor />} />
                     {/* <Route path="/quiz/:id" element={<Quiz />} /> */}
                     <Route path="/login"  element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route path="*" element={<NoPage />} />
                 </Routes>
             </BrowserRouter>

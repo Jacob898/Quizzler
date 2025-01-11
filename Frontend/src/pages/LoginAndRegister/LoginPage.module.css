@@ -44,4 +44,9 @@
 
 .loginButton {
     margin-top: 2vh;
+    background-color: #fadb14;
+}
+
+.loginButton:hover {
+    background-color: darkgoldenrod;
 }

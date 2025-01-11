@@ -34,7 +34,12 @@ const PageHeader = () => {
                     LOG IN
                 </Link>
             </Button>
-            <Button type="primary">SIGN UP</Button>
+            <Button type="primary">
+                <Link to ='/register'>
+                    SIGN UP
+                </Link>
+
+            </Button>
         </Header>
     </>
     );
