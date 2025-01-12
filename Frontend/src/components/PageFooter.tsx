@@ -1,6 +1,10 @@
 import React from "react";
-import { Layout, Row, Col } from "antd";
-import { InstagramOutlined, RedditOutlined } from "@ant-design/icons";
+import { Layout, Row, Col, Divider } from "antd";
+import {
+    InstagramFilled,
+    RedditCircleFilled,
+    FacebookFilled,
+} from "@ant-design/icons";
 
 const { Footer } = Layout;
 
@@ -8,31 +12,33 @@ const PageFooter = () => {
     return (
         <Footer style={{ textAlign: "center", backgroundColor: "#fadb14" }}>
             <Row justify="space-between" align="middle">
-                <Col>Regulamin</Col>
-                <Col>&copy; 2024 Quizzler</Col>
                 <Col>
+                    <a href="https://spinning-cat.vercel.app/">Regulamin</a>
+                </Col>
+                <Col>&copy; 2024 Quizzler</Col>
+                <Col style={{ fontSize: 30, padding: 1 }}>
                     <a
                         href="https://instagram.com"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        <InstagramOutlined />
-                    </a>{" "}
-                    |
+                        <InstagramFilled />
+                    </a>
+                    <Divider type="vertical" style={{ height: 30 }} />
                     <a
-                        href="https://4chan.org"
+                        href="https://facebook.com"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        4chan
-                    </a>{" "}
-                    |
+                        <FacebookFilled />
+                    </a>
+                    <Divider type="vertical" style={{ height: 30 }} />
                     <a
                         href="https://reddit.com"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        <RedditOutlined />
+                        <RedditCircleFilled />
                     </a>
                 </Col>
             </Row>
