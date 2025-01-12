@@ -3,31 +3,3 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-/* .menuDesktop {
-    display: flex;
-}
-
-.menuMobile {
-    display: none;
-}
-
-@media screen and (max-width: 768px) {
-    .menuDesktop {
-        display: none;
-    }
-
-    .menuMobile {
-        display: block;
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .menuDesktop {
-        display: flex;
-    }
-
-    .menuMobile {
-        display: none;
-    }
-} */

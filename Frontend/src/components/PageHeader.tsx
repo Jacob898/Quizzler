@@ -232,7 +232,7 @@ const PageHeader = () => {
                 {isLoggedIn && viewportWidth > 768 ? (
                     <Dropdown
                         // menu={{ items: userMenuItems }}
-                        overlay={menu}
+                        // overlay={menu}
                         menu={{
                             items: userMenuItems.map((item) => ({
                                 key: item.key,
