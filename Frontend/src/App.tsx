@@ -7,6 +7,7 @@ import QuizEditor from "./pages/QuizEditor/QuizEditor";
 import NoPage from "./pages/NoPage/NoPage";
 import LoginPage from "./pages/LoginAndRegister/LoginPage.tsx";
 import RegisterPage from "./pages/LoginAndRegister/RegisterPage.tsx";
+import ProfilePage from "./pages/Profile/ProfilePage.tsx";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/login"  element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="*" element={<NoPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                 </Routes>
             </BrowserRouter>
         </>
