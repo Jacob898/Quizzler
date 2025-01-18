@@ -1,6 +1,6 @@
-import { Layout, Menu, Button, Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Layout, Menu, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const { Header } = Layout;
 
@@ -36,11 +36,7 @@ const PageHeader = () => {
           <Link to="/editor">Dodaj Quiz</Link>
         </Menu.Item>
       </Menu>
-      <Input
-        placeholder="Szukaj quizu"
-        prefix={<SearchOutlined />}
-        style={{ width: 200, marginRight: "10px" }}
-      />
+      <SearchBar />
       <Button type="text">
         <Link to="/login">LOG IN</Link>
       </Button>
