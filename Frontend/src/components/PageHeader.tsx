@@ -41,8 +41,12 @@ const PageHeader = () => {
         prefix={<SearchOutlined />}
         style={{ width: 200, marginRight: "10px" }}
       />
-      <Button type="text">LOG IN</Button>
-      <Button type="primary">SIGN UP</Button>
+      <Button type="text">
+        <Link to="/login">LOG IN</Link>
+      </Button>
+      <Button type="primary">
+        <Link to="/register">SIGN UP</Link>
+      </Button>
     </Header>
   );
 };
