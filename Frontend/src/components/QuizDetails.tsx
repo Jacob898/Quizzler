@@ -1,6 +1,7 @@
 import { Layout } from "antd";
 import { useParams } from "react-router-dom";
 import { categories } from "../data/categories";
+import { Category, Quiz } from "../types/types";
 import PageHeader from "./PageHeader";
 import PageFooter from "./PageFooter";
 
@@ -12,10 +13,12 @@ const QuizDetails = () => {
     quizId: string;
   }>();
 
-  const category = categories.find(
+  const category: Category | undefined = categories.find(
     (cat) => cat.id === parseInt(categoryId || "")
   );
-  const quiz = category?.quizzes.find((q) => q.id === parseInt(quizId || ""));
+  const quiz: Quiz | undefined = category?.quizzes.find(
+    (q) => q.id === parseInt(quizId || "")
+  );
 
   return (
     <Layout>
