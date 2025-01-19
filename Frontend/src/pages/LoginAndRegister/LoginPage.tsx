@@ -1,14 +1,21 @@
 import {Button, Form, Input, Layout} from "antd";
 
 import styles from './LoginPage.module.css'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {LeftOutlined} from "@ant-design/icons";
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+
+    const handleClickToHomePage = () => {
+        navigate("/");
+    }
+
     return (
     <Layout>
-
     <div className={styles.loginPage} >
         <div className={styles.logoSection}>
+            <LeftOutlined className={styles.routeBackIcon} onClick={handleClickToHomePage} />
             <div className={styles.logo}>Logo-placeholder</div>
         </div>
 

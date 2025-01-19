@@ -53,9 +53,22 @@
 
 .registerButton {
     margin-top: 2vh;
-    background-color: blue;
+    background-color: lightblue;
 }
 
 .registerButton:hover {
     background-color: darkgreen;
+}
+
+.routeBackIcon {
+    font-size: 8vh;
+    cursor: pointer;
+    position: absolute;
+    top: 1.5vh;
+    left: 1.5vh;
+    color: black;
+}
+
+.routeBackIcon:hover {
+    color: lightgray;
 }
