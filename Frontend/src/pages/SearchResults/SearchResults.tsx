@@ -9,7 +9,8 @@ const { Content } = Layout;
 const SearchResults = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const query = params.get("query")?.toLowerCase() || "";
+  const originalQuery = params.get("query") || "";
+  const query = originalQuery.toLowerCase();
 
   const filteredQuizzes = categories
     .flatMap((category) =>
@@ -21,11 +22,18 @@ const SearchResults = () => {
     .filter((quiz) => quiz.title.toLowerCase().includes(query));
 
   return (
-    <Layout>
+    <Layout
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        backgroundColor: "#f5f5f5",
+      }}
+    >
       <PageHeader />
-      <Content style={{ padding: "20px", flex: 1, backgroundColor: "#f5f5f5" }}>
+      <Content style={{ padding: "20px", flex: 1 }}>
         <h2 style={{ textAlign: "center", marginBottom: "40px" }}>
-          Wyniki wyszukiwania dla: "{query}"
+          Wyniki wyszukiwania dla: "{originalQuery}"
         </h2>
         {filteredQuizzes.length > 0 ? (
           <Row gutter={[16, 16]} justify="center">
