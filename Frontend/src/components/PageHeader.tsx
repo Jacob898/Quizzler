@@ -33,12 +33,12 @@ interface SearchItem {
     title: string;
 }
 
-interface NavigationItem {
+interface MenuItem {
     key: string;
     label: string;
-    target: string;
-    // onClick?: () => void;
-    // danger?: boolean;
+    target?: string;
+    onClick?: () => void;
+    danger?: boolean;
 }
 
 const PageHeader = () => {
@@ -64,11 +64,6 @@ const PageHeader = () => {
         { id: 2, title: "Cool new blog" },
         { id: 3, title: "Our people" },
     ];
-
-    const searchDropdown = filteredItems.map((item) => ({
-        key: item.id.toString(),
-        label: <Link to={`/quiz/${item.id}`}>{item.title}</Link>,
-    }));
 
     const handleDropdownVisibleChange = (visible: boolean) => {
         setDropdownVisible(visible);
@@ -127,15 +122,24 @@ const PageHeader = () => {
         }
     };
 
-    const menu = (
-        <Menu onClick={handleMenuClick}>
-            {userMenuItems.map((item) => (
-                <Menu.Item key={item.key} danger={item.danger}>
-                    {item.label}
-                </Menu.Item>
-            ))}
-        </Menu>
-    );
+    const handleMobileMenuClick = (item: MenuItem): void => {
+        if (item.onClick) {
+            item.onClick();
+        } else if (item.target) {
+            navigate(item.target);
+        }
+        setIsUserMenuVisible(false);
+    };
+
+    // const menu = (
+    //     <Menu onClick={handleMenuClick}>
+    //         {userMenuItems.map((item) => (
+    //             <Menu.Item key={item.key} danger={item.danger}>
+    //                 {item.label}
+    //             </Menu.Item>
+    //         ))}
+    //     </Menu>
+    // );
 
     return (
         <Header
@@ -202,17 +206,31 @@ const PageHeader = () => {
                 {viewportWidth >= 950 ? (
                     <>
                         <Dropdown
-                            menu={{ items: searchDropdown }}
+                            menu={{
+                                items: filteredItems.map((item) => ({
+                                    key: item.id,
+                                    label: (
+                                        <Link
+                                            to={`/quiz/${item.id}`}
+                                            style={{
+                                                display: "block",
+                                                width: "100%",
+                                            }}
+                                        >
+                                            {item.title}
+                                        </Link>
+                                    ),
+                                })),
+                            }}
                             open={isDropdownVisible}
                             onOpenChange={handleDropdownVisibleChange}
                             trigger={["click"]}
                         >
-                            <Search
+                            <Input.Search
                                 placeholder="Szukaj quizu"
                                 value={searchTerm}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 onSearch={handleSearch}
-                                // allowClear
                                 style={{ width: 300, marginRight: 16 }}
                             />
                         </Dropdown>
@@ -231,8 +249,6 @@ const PageHeader = () => {
 
                 {isLoggedIn && viewportWidth > 768 ? (
                     <Dropdown
-                        // menu={{ items: userMenuItems }}
-                        // overlay={menu}
                         menu={{
                             items: userMenuItems.map((item) => ({
                                 key: item.key,
@@ -360,24 +376,21 @@ const PageHeader = () => {
                         itemLayout="vertical"
                         dataSource={filteredItems}
                         renderItem={(item: SearchItem) => (
-                            <List.Item
-                                style={{
-                                    backgroundColor: colors.secondary,
-                                    padding: 16,
-                                    marginBottom: 16,
-                                    borderRadius: 8,
-                                    // display: "flex",
-                                    // justifyContent: "center",
-                                    // alignItems: "center",
-                                }}
+                            <Link
+                                to={`/quiz/${item.id}`}
+                                style={{ color: colors.text }}
                             >
-                                <Link
-                                    to={`/quiz/${item.id}`}
-                                    style={{ color: colors.text }}
+                                <List.Item
+                                    style={{
+                                        backgroundColor: colors.secondary,
+                                        padding: 16,
+                                        marginBottom: 16,
+                                        borderRadius: 8,
+                                    }}
                                 >
                                     {item.title}
-                                </Link>
-                            </List.Item>
+                                </List.Item>
+                            </Link>
                         )}
                     />
                 ) : (
@@ -417,7 +430,7 @@ const PageHeader = () => {
                     <Menu
                         mode="vertical"
                         items={userMenuItems.map((item) => ({
-                            ...item,
+                            key: item.key,
                             style: {
                                 fontSize: "24px",
                                 height: "10vh",
@@ -427,28 +440,48 @@ const PageHeader = () => {
                                 justifyContent: "center",
                                 alignItems: "center",
                             },
-                            label: (
-                                <div
-                                    style={{
-                                        fontSize: "24px",
-                                        margin: "16px",
-                                    }}
-                                    onClick={() => {
-                                        if (item.onClick) {
-                                            item.onClick();
-                                        } else if (item.target) {
-                                            navigate(item.target);
-                                        }
-                                        setIsUserMenuVisible(false);
-                                    }}
-                                >
-                                    {item.label}
-                                </div>
+                            label: item.target ? (
+                                <Link to={item.target}>{item.label}</Link>
+                            ) : (
+                                <span>{item.label}</span>
                             ),
+                            onClick: () => {
+                                if (item.onClick) {
+                                    item.onClick();
+                                }
+                                setIsUserMenuVisible(false);
+                            },
+                            danger: item.danger,
                         }))}
                     />
                 </div>
             </Drawer>
+
+            {/* <Drawer
+                title="Menu"
+                placement="left"
+                onClose={() => setIsUserMenuVisible(false)}
+                open={isUserMenuVisible}
+            >
+                <Menu
+                    mode="vertical"
+                    items={userMenuItems.map((item) => ({
+                        key: item.key,
+                        label: item.target ? (
+                            <Link to={item.target}>{item.label}</Link>
+                        ) : (
+                            <span>{item.label}</span>
+                        ),
+                        onClick: () => {
+                            if (item.onClick) {
+                                item.onClick();
+                            }
+                            setIsUserMenuVisible(false);
+                        },
+                        danger: item.danger,
+                    }))}
+                />
+            </Drawer> */}
         </Header>
     );
 };
