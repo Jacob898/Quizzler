@@ -456,32 +456,6 @@ const PageHeader = () => {
                     />
                 </div>
             </Drawer>
-
-            {/* <Drawer
-                title="Menu"
-                placement="left"
-                onClose={() => setIsUserMenuVisible(false)}
-                open={isUserMenuVisible}
-            >
-                <Menu
-                    mode="vertical"
-                    items={userMenuItems.map((item) => ({
-                        key: item.key,
-                        label: item.target ? (
-                            <Link to={item.target}>{item.label}</Link>
-                        ) : (
-                            <span>{item.label}</span>
-                        ),
-                        onClick: () => {
-                            if (item.onClick) {
-                                item.onClick();
-                            }
-                            setIsUserMenuVisible(false);
-                        },
-                        danger: item.danger,
-                    }))}
-                />
-            </Drawer> */}
         </Header>
     );
 };
