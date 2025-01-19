@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
 import { categories } from "../../data/categories";
-import styles from "./Home.module.css";
+import CustomCard from "../../components/CustomCard";
 
 const { Content } = Layout;
 
@@ -19,87 +19,51 @@ const Home = () => {
         .slice(0, 5);
 
     return (
-        <Layout>
+        <Layout style={{ minHeight: "100vh" }}>
             <PageHeader />
-            <Content
-                style={{ padding: "20px", flex: 1, backgroundColor: "#f5f5f5" }}
-            >
-                <h2 style={{ textAlign: "center" }}>Featured</h2>
-                <div className={styles["desktop-featured"]}>
-                    <Row gutter={[16, 16]} justify="center">
-                        {featuredQuizzes.map((quiz) => (
-                            <Col key={quiz.id} xs={24} sm={12} md={8}>
-                                <Link
-                                    to={`/categories/${quiz.categoryId}/quiz/${quiz.id}`}
-                                >
-                                    <Card
-                                        hoverable
-                                        cover={
-                                            <img
-                                                alt={quiz.title}
-                                                src={quiz.img}
-                                            />
-                                        }
-                                        title={quiz.title}
-                                        bordered={false}
-                                    >
-                                        <p>
-                                            {quiz.description} (Kategoria:{" "}
-                                            {quiz.categoryName})
-                                        </p>
-                                    </Card>
-                                </Link>
-                            </Col>
-                        ))}
-                    </Row>
-                </div>
-                <div className={styles["mobile-featured"]}>
-                    <Carousel>
-                        {featuredQuizzes.map((quiz) => (
-                            <div key={quiz.id}>
-                                <Link
-                                    to={`/categories/${quiz.categoryId}/quiz/${quiz.id}`}
-                                >
-                                    <Card
-                                        hoverable
-                                        cover={
-                                            <img
-                                                alt={quiz.title}
-                                                src={quiz.img}
-                                            />
-                                        }
-                                        title={quiz.title}
-                                        bordered={false}
-                                    >
-                                        <p>
-                                            {quiz.description} (Kategoria:{" "}
-                                            {quiz.categoryName})
-                                        </p>
-                                    </Card>
-                                </Link>
-                            </div>
-                        ))}
-                    </Carousel>
-                </div>
-                <h2 style={{ textAlign: "center", marginTop: "40px" }}>
+            <Content style={{ padding: "20px", flex: 1 }}>
+                <h2 style={{ textAlign: "center", marginBottom: 16 }}>
+                    Featured
+                </h2>
+                <Row gutter={[16, 16]} justify="center">
+                    {featuredQuizzes.map((quiz, index) => (
+                        <Col key={index} xs={24} sm={12} md={8}>
+                            <Link
+                                to={`/categories/${quiz.categoryId}/quiz/${quiz.id}`}
+                            >
+                                <CustomCard
+                                    title={quiz.title}
+                                    description={quiz.description}
+                                    image={"https://placehold.co/200x150"}
+                                />
+                            </Link>
+                        </Col>
+                    ))}
+                </Row>
+
+                <h2
+                    style={{
+                        textAlign: "center",
+                        marginTop: "40px",
+                        marginBottom: 16,
+                    }}
+                >
                     Kategorie
                 </h2>
                 <Row gutter={[16, 16]} justify="center">
-                    {categories.map((category) => (
-                        <Col key={category.id} xs={24} sm={12} md={8}>
+                    {categories.map((category, index) => (
+                        <Col key={index} xs={24} sm={12} md={8}>
                             <Link to={`/categories/${category.id}`}>
                                 <Card
                                     hoverable
                                     cover={
                                         <img
                                             alt={category.name}
-                                            src={category.img}
+                                            src={"https://placehold.co/200x150"}
                                         />
                                     }
-                                    title={category.name}
-                                    bordered={false}
                                 >
-                                    <p>{category.quizzes.length} quizów</p>
+                                    {category.name}
                                 </Card>
                             </Link>
                         </Col>

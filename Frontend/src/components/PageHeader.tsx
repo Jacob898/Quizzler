@@ -18,6 +18,7 @@ import {
 import logo from "../assets/logo_temp.svg";
 import { colors } from "../constants/colors";
 import { useNavigate, Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -122,25 +123,6 @@ const PageHeader = () => {
         }
     };
 
-    const handleMobileMenuClick = (item: MenuItem): void => {
-        if (item.onClick) {
-            item.onClick();
-        } else if (item.target) {
-            navigate(item.target);
-        }
-        setIsUserMenuVisible(false);
-    };
-
-    // const menu = (
-    //     <Menu onClick={handleMenuClick}>
-    //         {userMenuItems.map((item) => (
-    //             <Menu.Item key={item.key} danger={item.danger}>
-    //                 {item.label}
-    //             </Menu.Item>
-    //         ))}
-    //     </Menu>
-    // );
-
     return (
         <Header
             style={{
@@ -226,13 +208,14 @@ const PageHeader = () => {
                             onOpenChange={handleDropdownVisibleChange}
                             trigger={["click"]}
                         >
-                            <Input.Search
+                            {/* <Input.Search
                                 placeholder="Szukaj quizu"
                                 value={searchTerm}
                                 onChange={(e) => handleSearch(e.target.value)}
                                 onSearch={handleSearch}
                                 style={{ width: 300, marginRight: 16 }}
-                            />
+                            /> */}
+                            <SearchBar />
                         </Dropdown>
                     </>
                 ) : (
