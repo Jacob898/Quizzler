@@ -50,3 +50,12 @@
 .loginButton:hover {
     background-color: darkgoldenrod;
 }
+
+.registerButton {
+    margin-top: 2vh;
+    background-color: blue;
+}
+
+.registerButton:hover {
+    background-color: darkgreen;
+}

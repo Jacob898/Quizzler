@@ -1,6 +1,7 @@
 import {Button, Form, Input, Layout} from "antd";
 
 import styles from './LoginPage.module.css'
+import {Link} from "react-router-dom";
 
 const LoginPage = () => {
     return (
@@ -34,6 +35,14 @@ const LoginPage = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className={styles.loginButton}>
                         Zaloguj się
+                    </Button>
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" className={styles.registerButton}>
+                        <Link to="/register">
+                            Załóż nowe konto
+                        </Link>
                     </Button>
                 </Form.Item>
             </Form>
