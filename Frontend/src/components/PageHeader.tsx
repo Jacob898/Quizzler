@@ -171,14 +171,12 @@ const PageHeader = () => {
         ) : (
           <>
             <Link to="/login">
-              <Button type="text" style={{ color: "#fff" }}>
-                Zaloguj
+              <Button type="primary" style={{ marginRight: 8 }}>
+                Log in
               </Button>
             </Link>
             <Link to="/register">
-              <Button type="text" style={{ color: "#fff" }}>
-                Zarejestruj
-              </Button>
+              <Button type="primary">Register</Button>
             </Link>
           </>
         )}
