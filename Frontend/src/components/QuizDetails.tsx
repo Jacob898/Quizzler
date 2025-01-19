@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import {Button, Col, Layout, Row} from "antd";
 import { useParams } from "react-router-dom";
 import { categories } from "../data/categories";
 import PageHeader from "./PageHeader";
@@ -32,6 +32,23 @@ const QuizDetails = () => {
               style={{ width: "300px", marginBottom: "20px" }}
             />
             <p>{quiz.description}</p>
+
+              <div style={{ textAlign: "center", margin: "20px auto", maxWidth: "600px" }}>
+                  {quiz.questions.map((question) => (
+                      <Col key={question.id} style={{ marginBottom: "15px" }}>
+                          <h2>{question.question}</h2>
+                          <Row style={{
+                              display: "flex",
+                              justifyContent: "space-evenly",
+
+                          }}>
+                              <Button>{question.answer1} </Button>
+                              <Button>{question.answer2} </Button>
+                              <Button>{question.answer3} </Button>
+                          </Row>
+                      </Col>
+                  ))}
+              </div>
           </div>
         )}
       </Content>
