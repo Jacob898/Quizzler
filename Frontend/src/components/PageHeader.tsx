@@ -90,7 +90,7 @@ const PageHeader = () => {
     }, []);
 
     const userMenuItems = [
-        { key: "1", label: "Konto", target: "/account" },
+        { key: "1", label: "Konto", target: "/profile" },
         { key: "2", label: "Znajomi", target: "/friends" },
         { key: "3", label: "Wyloguj się", onClick: onLogout, danger: true },
     ];
