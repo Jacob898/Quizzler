@@ -1,6 +1,7 @@
 export const categories = [
   {
     id: 1,
+    img: "https://via.placeholder.com/150",
     name: "D17",
     quizzes: [
       {
@@ -58,6 +59,7 @@ export const categories = [
   },
   {
     id: 2,
+    img: "https://via.placeholder.com/150",
     name: "PIWO",
     quizzes: [
       {
