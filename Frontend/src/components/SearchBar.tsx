@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Card, Row, Col } from "antd";
+import { Input, Card, List } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { categories } from "../data/categories";
@@ -25,7 +25,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setSearchQuery(query);
 
     if (query.trim()) {
-      const lowerCaseQuery = query.toLowerCase(); // Filtrowanie bez uwzględniania wielkości liter
+      const lowerCaseQuery = query.toLowerCase();
       const results = categories
         .flatMap((category) =>
           category.quizzes.map((quiz) => ({
@@ -53,6 +53,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const containerStyle: React.CSSProperties = {
     width: "100%",
     maxWidth: isMobile ? "100%" : "300px",
+    position: "relative",
+  };
+
+  const resultsStyle: React.CSSProperties = {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    width: "100%",
+    backgroundColor: "white",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    zIndex: 1000,
+    maxHeight: "400px",
+    overflowY: "auto",
+    borderRadius: "4px",
+    marginTop: "8px",
+  };
+
+  const listItemStyle: React.CSSProperties = {
+    padding: "8px 16px",
   };
 
   return (
@@ -64,38 +83,31 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onChange={handleSearchChange}
         onPressEnter={handleSearch}
         style={{
-          marginBottom: "10px",
           width: "100%",
         }}
       />
       {filteredQuizzes.length > 0 && (
-        <div
-          style={{
-            marginTop: "10px",
-            backgroundColor: "white",
-            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <Row gutter={[16, 16]}>
-            {filteredQuizzes.map((quiz) => (
-              <Col key={quiz.id} span={24}>
+        <div style={resultsStyle}>
+          <List
+            itemLayout="vertical"
+            dataSource={filteredQuizzes}
+            renderItem={(quiz) => (
+              <List.Item key={quiz.id} style={listItemStyle}>
                 <Link
                   to={`/categories/${quiz.categoryId}/quiz/${quiz.id}`}
                   onClick={onItemSelect}
                 >
-                  <Card
-                    hoverable
-                    style={{ marginBottom: "10px", width: "100%" }}
-                  >
+                  <Card hoverable style={{ width: "100%", margin: 0 }}>
                     <Card.Meta
                       title={quiz.title}
                       description={quiz.description}
                     />
                   </Card>
                 </Link>
-              </Col>
-            ))}
-          </Row>
+              </List.Item>
+            )}
+            style={{ padding: "0 16px" }}
+          />
         </div>
       )}
     </div>
