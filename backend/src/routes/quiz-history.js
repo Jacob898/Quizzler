@@ -3,6 +3,8 @@ import { authenticateToken } from "../middleware/auth.js";
 import QuizHistory from "../models/QuizHistory.js";
 import Quiz from "../models/Quiz.js";
 import QuizResult from "../models/QuizResult.js";
+import Review from "../models/Review.js";
+import { Op } from "sequelize";
 
 const router = express.Router();
 
@@ -49,44 +51,10 @@ router.get("/user", authenticateToken, async (req, res) => {
     }
 });
 
-// Get specific quiz history entry for user
-router.get("/:id", authenticateToken, async (req, res) => {
+// New route to get user's quiz results and reviews
+router.get("/user-results/:user_id", authenticateToken, async (req, res) => {
     try {
-        const history = await QuizHistory.findOne({
-            where: {
-                quiz_id: req.params.id,
-                user_id: req.user.userId,
-            },
-            include: [
-                {
-                    model: Quiz,
-                    attributes: ["name", "description"],
-                },
-                {
-                    model: QuizResult,
-                    attributes: ["title", "description"],
-                },
-            ],
-        });
-
-        if (!history) {
-            return res
-                .status(404)
-                .json({ message: "Quiz history entry not found" });
-        }
-
-        res.json(history);
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to fetch quiz history entry",
-            error: error.message,
-        });
-    }
-});
-
-router.get("/user-results", authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.userId;
+        const userId = req.params.user_id || req.user.userId;
 
         const userResults = await QuizHistory.findAll({
             where: { user_id: userId },

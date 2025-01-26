@@ -12,7 +12,8 @@ router.post("/register", async (req, res) => {
         const tokens = generateTokens(user.user_id);
         res.status(201).json({
             ...tokens,
-            user: { id: user.user_id, email: user.email },
+            // TODO: img_url is empty for now
+            user: { id: user.user_id, email: user.email, img_url: "" },
         });
     } catch (error) {
         res.status(400).json({ message: "Registration failed" });

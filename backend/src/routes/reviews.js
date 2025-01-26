@@ -32,7 +32,7 @@ router.get("/quiz/:quizId", async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ["email"], // Only include email, not password
+                    attributes: ["email"],
                 },
             ],
         });
