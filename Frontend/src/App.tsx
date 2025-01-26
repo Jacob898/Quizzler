@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import QuizEditor from "./pages/QuizEditor/QuizEditor";
+import QuizEditor from "./pages/Quiz/QuizEditor";
 import Categories from "./pages/Categories/Categories";
 import CategoryDetails from "./pages/Categories/CategoryDetails";
-import QuizDetails from "./components/QuizDetails";
+import QuizPage from "./pages/Quiz/QuizPage.tsx";
+import QuizSolving from "./pages/Quiz/QuizSolving.tsx";
 import NoPage from "./pages/NoPage/NoPage";
 import LoginPage from "./pages/LoginAndRegister/LoginPage.tsx";
 import RegisterPage from "./pages/LoginAndRegister/RegisterPage.tsx";
@@ -31,8 +32,13 @@ function App() {
                     />
                     <Route
                         path="/categories/:categoryId/quiz/:quizId"
-                        element={<QuizDetails />}
+                        element={<QuizPage />}
                     />
+
+                    <Route path="/categories/:categoryId/quiz/:quizId/solve"
+                           element={<QuizSolving />}
+                    />
+
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
