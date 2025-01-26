@@ -8,11 +8,12 @@ const router = express.Router();
 // Create a new quiz result
 router.post("/", authenticateToken, async (req, res) => {
     try {
-        const { quiz_id, title, description } = req.body;
+        const { quiz_id, title, description, img_url } = req.body;
         const quizResult = await QuizResult.create({
             quiz_id,
             title,
             description,
+            img_url,
         });
         res.status(201).json(quizResult);
     } catch (error) {
@@ -60,12 +61,12 @@ router.get("/:id", async (req, res) => {
 // Update a quiz result
 router.put("/:id", authenticateToken, async (req, res) => {
     try {
-        const { title, description } = req.body;
+        const { title, description, img_url } = req.body;
         const result = await QuizResult.findByPk(req.params.id);
         if (!result) {
             return res.status(404).json({ message: "Quiz result not found" });
         }
-        await result.update({ title, description });
+        await result.update({ title, description, img_url });
         res.json(result);
     } catch (error) {
         res.status(500).json({

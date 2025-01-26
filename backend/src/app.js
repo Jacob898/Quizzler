@@ -1,18 +1,19 @@
 import express from "express";
 import cors from "cors";
-import sequelize from "./config/database.js";
+import initDatabase from "./config/init-db.js";
+import "dotenv/config";
 
-import "./models/User.js";
-import "./models/Quiz.js";
-import "./models/QuizResult.js";
-import "./models/QuizHistory.js";
-import "./models/Review.js";
-
+// Import routes
 import authRoutes from "./routes/auth.js";
 import quizRoutes from "./routes/quizzes.js";
 import reviewRoutes from "./routes/reviews.js";
 import quizHistoryRoutes from "./routes/quiz-history.js";
 import quizResultRoutes from "./routes/quiz-results.js";
+import categoryRoutes from "./routes/categories.js";
+import userRoutes from "./routes/users.js";
+import adminRoutes from "./routes/admin.js";
+import quizAnswerRoutes from "./routes/quiz-answers.js";
+import quizQuestionRoutes from "./routes/quiz-questions.js";
 
 const app = express();
 
@@ -25,20 +26,23 @@ app.use("/api/quizzes", quizRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/quiz-history", quizHistoryRoutes);
 app.use("/api/quiz-results", quizResultRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/quiz-answers", quizAnswerRoutes);
+app.use("/api/quiz-questions", quizQuestionRoutes);
 
-// Sync database
-sequelize
-    .sync({ alter: true })
+// Initialize database before starting the server
+initDatabase()
     .then(() => {
-        console.log("Database synchronized");
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
     })
     .catch((error) => {
-        console.error("Error synchronizing database:", error);
+        console.error("Failed to initialize database:", error);
+        process.exit(1);
     });
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 export default app;
