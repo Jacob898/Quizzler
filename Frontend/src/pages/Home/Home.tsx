@@ -2,21 +2,53 @@ import { Layout, Card, Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
-import { categories } from "../../data/categories";
 import CustomCard from "../../components/CustomCard";
+import {useEffect, useState} from "react";
 
 const { Content } = Layout;
 
+
+
+
+
 const Home = () => {
-  const featuredQuizzes = categories
-    .flatMap((category) =>
-      category.quizzes.map((quiz) => ({
-        ...quiz,
-        categoryName: category.name,
-        categoryId: category.id,
+    const [categories, setCategories] = useState([]);
+    const [quizzes, setQuizzes] = useState([]);
+
+    useEffect(()=>{
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('https://quizzler-backend-1.onrender.com/api/categories');
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.error("Error occured while fetching category data: " , error);
+            }
+        };
+
+        const fetchQuizzes = async () => {
+            try {
+                const response = await fetch('https://quizzler-backend-1.onrender.com/api/quizzes');
+                const data = await response.json();
+                setQuizzes(data);
+            } catch (error) {
+                console.error("Error occured while fetching quizz data: " , error);
+            }
+        };
+
+        fetchQuizzes();
+        fetchCategories();
+
+
+    }, []);
+
+  const featuredQuizzes = quizzes
+      .map((quiz) => ({
+          ...quiz,
+          category: quiz.Categories[0]?.category || "Nie ma takiej kategorii",
+          category_id: quiz.Categories[0]?.category_id || null,
       }))
-    )
-    .slice(0, 5);
+      .slice(0, 5);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -24,13 +56,13 @@ const Home = () => {
       <Content style={{ padding: "20px", flex: 1 }}>
         <h2 style={{ textAlign: "center", marginBottom: 16 }}>Featured</h2>
         <Row gutter={[16, 16]} justify="center">
-          {featuredQuizzes.map((quiz, index) => (
+          {featuredQuizzes.map((quiz,index) => (
             <Col key={index} xs={24} sm={12} md={8}>
-              <Link to={`/categories/${quiz.categoryId}/quiz/${quiz.id}`}>
+              <Link to={`/categories/${quiz.category_id}/quiz/${quiz.quiz_id}`}>
                 <CustomCard
-                  title={quiz.title}
+                  title={quiz.name}
                   description={quiz.description}
-                  image={"https://placehold.co/200x150"}
+                  image={ quiz.img_url || "https://placehold.co/200x150"}
                 />
               </Link>
             </Col>
@@ -47,19 +79,19 @@ const Home = () => {
           Kategorie
         </h2>
         <Row gutter={[16, 16]} justify="center">
-          {categories.map((category, index) => (
-            <Col key={index} xs={24} sm={12} md={8}>
-              <Link to={`/categories/${category.id}`}>
+          {categories.map((category) => (
+            <Col key={category.category_id} xs={24} sm={12} md={8}>
+              <Link to={`/categories/${category.category_id}`}>
                 <Card
                   hoverable
                   cover={
                     <img
-                      alt={category.name}
-                      src={"https://placehold.co/200x150"}
+                      alt={category.category}
+                      src={category.img_url || "https://placehold.co/200x150"}
                     />
                   }
                 >
-                  {category.name}
+                  {category.category}
                 </Card>
               </Link>
             </Col>
