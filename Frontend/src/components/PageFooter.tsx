@@ -15,7 +15,7 @@ const PageFooter = () => {
                 <Col>
                     <a href="https://spinning-cat.vercel.app/">Regulamin</a>
                 </Col>
-                <Col>&copy; 2024 Quizzler</Col>
+                <Col>&copy; 2025 Quizzler</Col>
                 <Col style={{ fontSize: 30, padding: 1 }}>
                     <a
                         href="https://instagram.com"
