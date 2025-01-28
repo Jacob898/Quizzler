@@ -11,9 +11,39 @@ const RegisterPage = () => {
         navigate("/");
     }
 
+    const handleRegister = async (values) => {
+        try {
+            const response = await fetch("https://quizzler-backend-1.onrender.com/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                }),
+            });
+
+            if (response.ok) {
+                console.log("User registered successfully ");
+                const siteResponse = await response.json();
+                localStorage.setItem("token", siteResponse.accessToken);
+                localStorage.setItem("refreshToken", siteResponse.refreshToken);
+                localStorage.setItem("userID", siteResponse.user.id);
+                navigate("/");
+            } else {
+                const error = await response.json();
+                console.error("Registration failed: ", error );
+                alert("Rejestracja nie powiodła się");
+            }
+        } catch (error) {
+            console.error("error occured while registering: ", error);
+            alert("Rejestracja nie powiodła się");
+        }
+    }
+
     return (
         <Layout>
-
             <div className={styles.loginPage} >
                 <div className={styles.logoSection}>
                     <LeftOutlined className={styles.routeBackIcon} onClick={handleClickToHomePage} />
@@ -25,9 +55,10 @@ const RegisterPage = () => {
                     <Form
                         name="login-form"
                         layout="vertical"
+                        onFinish={handleRegister}
                     >
                         <Form.Item label="Nazwa Użytkownika"
-                                   name="Nazwa Użytkownika"
+                                   name="email"
                                    rules={[{required: true, message:"Nazwa użytkownika jest wymagana"}]}
                         >
                             <Input />

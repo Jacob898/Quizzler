@@ -12,7 +12,6 @@ router.post("/register", async (req, res) => {
         const tokens = generateTokens(user.user_id);
         res.status(201).json({
             ...tokens,
-            // TODO: img_url is empty for now
             user: { id: user.user_id, email: user.email, img_url: "" },
         });
     } catch (error) {
