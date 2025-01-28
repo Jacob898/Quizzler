@@ -1,7 +1,5 @@
 import { Button, Layout } from "antd";
-import {Link, useParams} from "react-router-dom";
-import { categories } from "../../data - temp/categories.ts";
-import { Category, Quiz } from "../../types/types.ts";
+import { Link, useParams } from "react-router-dom";
 import PageHeader from "../../components/PageHeader.tsx";
 import PageFooter from "../../components/PageFooter.tsx";
 
