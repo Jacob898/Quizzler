@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import QuizEditor from "./pages/Quiz/QuizEditor";
+import QuizEditor from "./pages/QuizEditor/QuizEditor";
 import Categories from "./pages/Categories/Categories";
 import CategoryDetails from "./pages/Categories/CategoryDetails";
 import QuizPage from "./pages/Quiz/QuizPage.tsx";
@@ -35,8 +35,11 @@ function App() {
                         element={<QuizPage />}
                     />
 
-                    <Route path="/categories/:categoryId/quiz/:quizId/solve"
-                           element={<QuizSolving />}
+                    <Route path="/quiz/:quizId" element={<QuizPage />} />
+
+                    <Route
+                        path="/categories/:categoryId/quiz/:quizId/solve"
+                        element={<QuizSolving />}
                     />
 
                     <Route path="/login" element={<LoginPage />} />
