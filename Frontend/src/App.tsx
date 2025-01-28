@@ -42,6 +42,11 @@ function App() {
                         element={<QuizSolving />}
                     />
 
+                    <Route
+                        path="/quiz/:quizId/solve"
+                        element={<QuizSolving />}
+                    />
+
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/profile" element={<ProfilePage />} />

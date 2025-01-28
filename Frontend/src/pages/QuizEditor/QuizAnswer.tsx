@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Card, Form, Input, InputNumber, Tag } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Card, Form, Input, Space } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import QuizAnswer from "./QuizAnswer";
