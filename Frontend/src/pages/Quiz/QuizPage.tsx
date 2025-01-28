@@ -1,47 +1,11 @@
 import { Button, Layout } from "antd";
 import { Link, useParams } from "react-router-dom";
+import { Quiz } from "../../types/types.ts";
 import PageHeader from "../../components/PageHeader.tsx";
 import PageFooter from "../../components/PageFooter.tsx";
 import { useEffect, useState } from "react";
 
 const { Content } = Layout;
-
-type User = {
-    user_id: number;
-    email: string;
-    img_url: string | null;
-};
-
-type Review = {
-    quiz_review_id: number;
-    quiz_id: number;
-    user_id: number;
-    User: User;
-    comment: string;
-    stars: number;
-    createdAt: string;
-    updatedAt: string;
-};
-
-type Category = {
-    category_id: number;
-    category: string;
-    img_url: string;
-    createdAt: string;
-    updatedAt: string;
-};
-
-interface Quiz {
-    quiz_id: number;
-    name: string;
-    description: string;
-    img_url: string | null;
-    user_id: number;
-    createdAt: string;
-    updatedAt: string;
-    Categories: Category[];
-    Reviews: Review[];
-}
 
 const QuizPage = () => {
     const [quizData, setQuizData] = useState<Quiz | null>(null);
