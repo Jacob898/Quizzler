@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input, Card, List } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { categories } from "../data/categories";
+import { categories } from "../data - temp/categories";
 import { Quiz } from "../types/types";
 
 interface SearchBarProps {

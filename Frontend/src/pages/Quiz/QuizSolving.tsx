@@ -4,7 +4,7 @@ import PageFooter from "../../components/PageFooter.tsx";
 import {Content} from "antd/es/layout/layout";
 import {useParams} from "react-router-dom";
 import {Category, Quiz} from "../../types/types.ts";
-import {categories} from "../../data/categories.ts";
+import {categories} from "../../data - temp/categories.ts";
 
 const QuizSolving = () => {
     const { categoryId, quizId } = useParams<{
