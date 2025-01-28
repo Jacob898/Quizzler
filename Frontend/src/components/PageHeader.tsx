@@ -38,29 +38,35 @@ const PageHeader = () => {
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
 
-  // Mockup logout
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const user = { name: "Jan Kowalski" };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const onLogout = () => {
-    setIsLoggedIn(false);
-  };
 
-  // Quiz data
+    useEffect(() => {
+        const status = localStorage.getItem("isLoggedIn") === "true";
+        setIsLoggedIn(status);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userID");
+        setIsLoggedIn(false);
+    };
+
+  // Quiz data - temp
   const staticData: SearchItem[] = [];
 
   // userMenuItems
   const userMenuItems = [
     { key: "1", label: "Konto", target: "/profile" },
-    { key: "2", label: "Znajomi", target: "/friends" },
-    { key: "3", label: "Wyloguj się", onClick: onLogout, danger: true },
+    { key: "2", label: "Wyloguj się", onClick: handleLogout, danger: true },
   ];
 
   // navigation
   const navigation = [
     { key: "1", label: "Kategorie", target: "/categories" },
     { key: "2", label: "Dodaj Quiz", target: "/add-quiz" },
-    { key: "3", label: "Aktywność", target: "/friends-activity" },
   ];
 
   const navigate = useNavigate();
@@ -171,12 +177,12 @@ const PageHeader = () => {
         ) : (
           <>
             <Link to="/login">
-              <Button type="primary" style={{ marginRight: 8 }}>
-                Log in
+              <Button type="primary" style={{ marginRight: 8 }} >
+                Zaloguj się
               </Button>
             </Link>
             <Link to="/register">
-              <Button type="primary">Register</Button>
+              <Button type="primary">Zarejestruj się </Button>
             </Link>
           </>
         )}

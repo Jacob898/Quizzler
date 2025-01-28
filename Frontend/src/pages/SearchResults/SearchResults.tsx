@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { Layout, Card, Row, Col } from "antd";
-import { categories } from "../../data/categories";
+import { categories } from "../../data - temp/categories";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
 

@@ -16,7 +16,7 @@ const Categories = () => {
                 const data = await response.json();
                 setCategories(data);
             } catch (error) {
-                console.error("Error occured while fetching category data: " , error);
+                console.error("Error occured while fetching category data - temp: " , error);
             }
         };
 

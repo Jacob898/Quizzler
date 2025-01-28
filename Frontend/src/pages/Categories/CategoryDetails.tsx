@@ -24,7 +24,7 @@ const CategoryDetails: React.FC = () => {
                 setQuizzes(filteredQuizzes);
 
             } catch (error) {
-                console.error("Error occured while fetching quiz data: ", error);
+                console.error("Error occured while fetching quiz data - temp: ", error);
             }
         };
 

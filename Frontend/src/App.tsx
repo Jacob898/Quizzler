@@ -5,12 +5,11 @@ import Categories from "./pages/Categories/Categories";
 import CategoryDetails from "./pages/Categories/CategoryDetails";
 import QuizPage from "./pages/Quiz/QuizPage.tsx";
 import QuizSolving from "./pages/Quiz/QuizSolving.tsx";
-import NoPage from "./pages/NoPage/NoPage";
+import NoPage from "./pages/404/404.tsx";
 import LoginPage from "./pages/LoginAndRegister/LoginPage.tsx";
 import RegisterPage from "./pages/LoginAndRegister/RegisterPage.tsx";
 import ProfilePage from "./pages/Profile/ProfilePage.tsx";
 import SearchResults from "./pages/SearchResults/SearchResults.tsx";
-import FriendsActivity from "./pages/FriendsActivity/FriendsActivity";
 
 function App() {
     return (
@@ -21,10 +20,6 @@ function App() {
                     <Route path="/editor" element={<QuizEditor />} />
                     <Route path="/categories" element={<Categories />} />
                     <Route path="/add-quiz" element={<QuizEditor />} />
-                    <Route
-                        path="/friends-activity"
-                        element={<FriendsActivity />}
-                    />
                     <Route path="/categories" element={<Categories />} />
                     <Route
                         path="/categories/:categoryId"

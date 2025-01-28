@@ -30,6 +30,7 @@ const LoginPage = () => {
                 localStorage.setItem("token", siteResponse.accessToken);
                 localStorage.setItem("refreshToken", siteResponse.refreshToken);
                 localStorage.setItem("userID", siteResponse.user.id);
+                localStorage.setItem("isLoggedIn", "true");
                 navigate("/");
             } else {
                 const error = await response.json();
