@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Card, List } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { categories } from "../data - temp/categories";
 import { Quiz } from "../types/types";
 
 interface SearchBarProps {
@@ -18,88 +17,101 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredQuizzes, setFilteredQuizzes] = useState<Quiz[]>([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-
-    if (query.trim()) {
-      const lowerCaseQuery = query.toLowerCase();
-      const results = categories
-        .flatMap((category) =>
-          category.quizzes.map((quiz) => ({
-            ...quiz,
-            categoryId: category.id,
-          }))
-        )
-        .filter((quiz) => quiz.title.toLowerCase().includes(lowerCaseQuery));
-      setFilteredQuizzes(results);
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      fetchQuizzesByNameOrId(searchQuery);
     } else {
       setFilteredQuizzes([]);
     }
+  }, [searchQuery]);
+
+  const fetchQuizzesByNameOrId = async (query: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://quizzler-backend-1.onrender.com/api/quizzes`
+      );
+
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const data = await response.json();
+      console.log("Fetched quizzes:", data);
+
+      const quizzes = Array.isArray(data) ? data : data.quizzes || [];
+      console.log("Processed quizzes:", quizzes);
+
+      const filteredData = quizzes.filter(
+        (quiz) =>
+          quiz.name?.toLowerCase().includes(query) ||
+          quiz.quiz_id?.toString().includes(query)
+      );
+      console.log("Filtered quizzes:", filteredData);
+      setFilteredQuizzes(filteredData);
+    } catch (error) {
+      console.error("Error fetching quizzes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
       navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
       setFilteredQuizzes([]);
-      if (onEnter) {
-        onEnter();
-      }
+      if (onEnter) onEnter();
     }
   };
 
-  const containerStyle: React.CSSProperties = {
-    width: "100%",
-    maxWidth: isMobile ? "100%" : "300px",
-    position: "relative",
-  };
-
-  const resultsStyle: React.CSSProperties = {
-    position: "absolute",
-    top: "100%",
-    left: 0,
-    width: "100%",
-    backgroundColor: "white",
-    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    zIndex: 1000,
-    maxHeight: "400px",
-    overflowY: "auto",
-    borderRadius: "4px",
-    marginTop: "8px",
-  };
-
-  const listItemStyle: React.CSSProperties = {
-    padding: "8px 16px",
-  };
-
   return (
-    <div style={containerStyle}>
+    <div
+      style={{
+        width: "100%",
+        maxWidth: isMobile ? "100%" : "300px",
+        position: "relative",
+      }}
+    >
       <Input
         placeholder="Szukaj quizu"
         prefix={<SearchOutlined />}
         value={searchQuery}
         onChange={handleSearchChange}
         onPressEnter={handleSearch}
-        style={{
-          width: "100%",
-        }}
+        loading={loading}
+        style={{ width: "100%" }}
       />
       {filteredQuizzes.length > 0 && (
-        <div style={resultsStyle}>
+        <div
+          style={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            width: "100%",
+            backgroundColor: "white",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            zIndex: 1000,
+            maxHeight: "400px",
+            overflowY: "auto",
+            borderRadius: "4px",
+            marginTop: "8px",
+          }}
+        >
           <List
             itemLayout="vertical"
             dataSource={filteredQuizzes}
             renderItem={(quiz) => (
-              <List.Item key={quiz.id} style={listItemStyle}>
-                <Link
-                  to={`/categories/${quiz.categoryId}/quiz/${quiz.id}`}
-                  onClick={onItemSelect}
-                >
+              <List.Item key={quiz.quiz_id} style={{ padding: "8px 16px" }}>
+                <Link to={`/quiz/${quiz.quiz_id}`} onClick={onItemSelect}>
                   <Card hoverable style={{ width: "100%", margin: 0 }}>
                     <Card.Meta
-                      title={quiz.title}
+                      title={quiz.name}
                       description={quiz.description}
                     />
                   </Card>
