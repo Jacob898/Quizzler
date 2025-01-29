@@ -125,7 +125,7 @@ const QuizPage = () => {
       style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
     >
       <PageHeader />
-      <Content style={{ padding: "20px", flex: 1, backgroundColor: "#f5f5f5" }}>
+      <Content style={{ padding: "20px", flex: 1 }}>
         {!quizData ? (
           <p style={{ textAlign: "center", fontSize: "18px", color: "#888" }}>
             Nie znaleziono quizu.
