@@ -15,39 +15,114 @@ const PageHeader = () => {
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+  const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
+  const navigate = useNavigate();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
-
   const user_id = localStorage.getItem("userID");
-  const user_token = localStorage.getItem("token");
+  let user_token = localStorage.getItem("token");
+  let refresh_token = localStorage.getItem("refreshToken");
+
+  const refreshAccessToken = async () => {
+    try {
+      const response = await fetch(
+        "https://quizzler-backend-1.onrender.com/api/auth/refresh-token",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken: refresh_token }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to refresh token");
+      const data = await response.json();
+      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("token", data.accessToken);
+      user_token = data.accessToken;
+      refresh_token = data.refreshToken;
+      return user_token;
+    } catch (error) {
+      console.log("Error refreshing token", error);
+      handleLogout();
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(
+        `https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user_token}`,
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+          return fetchUserData();
+        }
+      }
+
+      const data = await response.json();
+      setImgUrl(data.img_url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const status = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(status);
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+  }, []);
 
-    if (status) {
-      const fetchUserData = async () => {
-        try {
-          const response = await fetch(
-            `https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${user_token}`,
-              },
-            }
-          );
-          const data = await response.json();
-          setImgUrl(data.img_url);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
+  useEffect(() => {
+    if (isLoggedIn) {
       fetchUserData();
     }
-  }, [user_id, user_token]);
+  }, [isLoggedIn]);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
+  // Quiz data - temp
+  const staticData: SearchItem[] = [];
+
+  // userMenuItems
+  const userMenuItems = [
+    { key: "1", label: "Konto", target: "/profile" },
+    { key: "2", label: "Wyloguj się", onClick: handleLogout, danger: true },
+  ];
+
+  // navigation
+  const navigation = [
+    { key: "1", label: "Kategorie", target: "/categories" },
+    { key: "2", label: "Dodaj Quiz", target: "/add-quiz" },
+  ];
+
+  const handleNavigationClick = ({ key }: { key: string }) => {
+    const { target } = navigation.find((item) => item.key === key) || {};
+    if (target) {
+      navigate(target);
+    }
+  };
+
+  const handleMenuClick = ({ key }: { key: string }) => {
+    const item = userMenuItems.find((menuItem) => menuItem.key === key);
+    if (item) {
+      if (item.target) {
+        navigate(item.target);
+      } else if (item.onClick) {
+        item.onClick();
+      }
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
