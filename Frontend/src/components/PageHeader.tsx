@@ -24,75 +24,99 @@ const PageHeader = () => {
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
+    useEffect(() => {
+        const handleResize = () => setViewportWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.clear();
+        setIsLoggedIn(false);
+        navigate("/");
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    const fetchUserData = async () => {
+        const user_id = localStorage.getItem("userID");
+        let user_token = localStorage.getItem("token");
+        const refresh_token = localStorage.getItem("refreshToken");
 
-  const handleLogout = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    navigate("/");
-  };
-
-  const fetchUserData = async () => {
-    const user_id = localStorage.getItem("userID");
-    let user_token = localStorage.getItem("token");
-    let refresh_token = localStorage.getItem("refreshToken");
-
-    try {
-      const response = await fetch(
-        `https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${user_token}`,
-          },
+        if (!user_id || !user_token) {
+            console.error("Brak ID użytkownika lub tokena w localStorage");
+            handleLogout();
+            return;
         }
-      );
 
-      if (response.status === 401) {
-        user_token = await refreshAccessToken(refresh_token);
-        if (user_token) {
-          return fetchUserData();
+        try {
+            const response = await fetch(
+                `https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${user_token}`,
+                    },
+                }
+            );
+
+            if (response.status === 403) {
+                user_token = await refreshAccessToken(refresh_token);
+                if (user_token) return fetchUserData();
+                // handleLogout();
+            }
+
+            if (response.status === 401) {
+                console.warn("Token wygasł. Próba odświeżenia...");
+                user_token = await refreshAccessToken(refresh_token);
+                if (user_token) return fetchUserData(); // Ponowna próba po odświeżeniu tokena
+            }
+
+            if (!response.ok) throw new Error("Błąd pobierania danych użytkownika");
+
+            const data = await response.json();
+            setImgUrl(data.img_url);
+
+        } catch (error) {
+            console.error("Błąd pobierania użytkownika:", error);
         }
-      }
+    };
 
-      const data = await response.json();
-      setImgUrl(data.img_url);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
 
-  const refreshAccessToken = async (refresh_token) => {
-    try {
-      const response = await fetch(
-        "https://quizzler-backend-1.onrender.com/api/auth/refresh-token",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken: refresh_token }),
+    const refreshAccessToken = async (refresh_token) => {
+        if (!refresh_token) {
+            console.error("Brak refresh tokena. Wylogowanie...");
+            handleLogout();
+            return null;
         }
-      );
 
-      if (!response.ok) throw new Error("Failed to refresh token");
-      const data = await response.json();
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("token", data.accessToken);
-      return data.accessToken;
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      handleLogout();
-    }
-  };
+        try {
+            const response = await fetch(
+                "https://quizzler-backend-1.onrender.com/api/auth/refresh-token",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ refreshToken: refresh_token }),
+                }
+            );
 
-  return (
+            if (!response.ok) {
+                console.error("Nie udało się odświeżyć tokena. Wylogowanie...");
+                handleLogout();
+                return null;
+            }
+
+            const data = await response.json();
+            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("token", data.accessToken);
+            return data.accessToken;
+        } catch (error) {
+            console.error("Błąd odświeżania tokena:", error);
+            handleLogout();
+            return null;
+        }
+    };
+
+    return (
     <Header
       style={{
         position: "sticky",
