@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Drawer, Button, Avatar } from "antd";
+import { Layout, Menu, Drawer, Button, Avatar, Input } from "antd";
 import { MenuOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
@@ -41,8 +41,7 @@ const PageHeader = () => {
 
   const fetchUserData = async () => {
     const user_id = localStorage.getItem("userID");
-    let user_token = localStorage.getItem("token");
-    let refresh_token = localStorage.getItem("refreshToken");
+    const user_token = localStorage.getItem("token");
 
     try {
       const response = await fetch(
@@ -55,13 +54,6 @@ const PageHeader = () => {
           },
         }
       );
-
-      if (response.status === 401) {
-        user_token = await refreshAccessToken(refresh_token);
-        if (user_token) {
-          return fetchUserData();
-        }
-      }
 
       const data = await response.json();
       setImgUrl(data.img_url);
@@ -84,6 +76,7 @@ const PageHeader = () => {
         height: "64px",
       }}
     >
+      {/* Lewa sekcja: Nawigacja */}
       <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
         {viewportWidth >= 768 ? (
           <>
@@ -106,6 +99,7 @@ const PageHeader = () => {
         )}
       </div>
 
+      {/* Środek: QUIZZLER zamiast loga */}
       <div style={{ textAlign: "center", flex: 1 }}>
         <Link to="/">
           <h1 style={{ color: "white", fontSize: "24px", margin: 0 }}>
@@ -114,6 +108,7 @@ const PageHeader = () => {
         </Link>
       </div>
 
+      {/* Prawa sekcja: SearchBar + Konto/Logowanie */}
       <div
         style={{
           display: "flex",
@@ -123,12 +118,67 @@ const PageHeader = () => {
           gap: "12px",
         }}
       >
-        <SearchOutlined
-          style={{ fontSize: 24, color: "white", cursor: "pointer" }}
-          onClick={() => setIsSearchVisible(true)}
-        />
+        {viewportWidth >= 768 ? (
+          <>
+            <SearchBar />
+            {isLoggedIn ? (
+              <>
+                <Link to="/profile">
+                  <Avatar
+                    src={imgUrl || <UserOutlined />}
+                    style={{ cursor: "pointer", backgroundColor: "white" }}
+                  />
+                </Link>
+                <Button
+                  type="primary"
+                  style={{
+                    backgroundColor: "#0a410a",
+                    color: "white",
+                    border: "none",
+                  }}
+                  onClick={handleLogout}
+                >
+                  Wyloguj się
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: "#0a410a",
+                      color: "white",
+                      border: "none",
+                    }}
+                  >
+                    Zaloguj się
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: "#0a410a",
+                      color: "white",
+                      border: "none",
+                    }}
+                  >
+                    Zarejestruj się
+                  </Button>
+                </Link>
+              </>
+            )}
+          </>
+        ) : (
+          <SearchOutlined
+            style={{ fontSize: 24, color: "white", cursor: "pointer" }}
+            onClick={() => setIsSearchVisible(true)}
+          />
+        )}
       </div>
 
+      {/* Drawer dla nawigacji w trybie mobilnym */}
       <Drawer
         open={isNavigationVisible}
         onClose={() => setIsNavigationVisible(false)}
@@ -160,6 +210,7 @@ const PageHeader = () => {
         />
       </Drawer>
 
+      {/* Drawer dla wyszukiwania na małych ekranach */}
       <Drawer
         open={isSearchVisible}
         onClose={() => setIsSearchVisible(false)}
