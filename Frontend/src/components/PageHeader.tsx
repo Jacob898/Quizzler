@@ -39,11 +39,34 @@ const PageHeader = () => {
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
+    const user_id = localStorage.getItem("userID");
+    const user_token  = localStorage.getItem("token");
 
 
     useEffect(() => {
         const status = localStorage.getItem("isLoggedIn") === "true";
         setIsLoggedIn(status);
+
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authorization": `Bearer ${user_token}`
+                    }
+                });
+                const data = await response.json();
+                setImgUrl(data.img_url);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchUserData();
+
+
     }, []);
 
     const handleLogout = () => {
@@ -52,6 +75,7 @@ const PageHeader = () => {
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("userID");
         setIsLoggedIn(false);
+        navigate("/");
     };
 
   // Quiz data - temp
@@ -163,17 +187,34 @@ const PageHeader = () => {
         )}
 
         {isLoggedIn && viewportWidth > 768 ? (
-          <Avatar
-            icon={<UserOutlined />}
-            style={{ cursor: "pointer", marginLeft: 16 }}
-            onClick={() => setIsUserMenuVisible(true)}
-          />
+            (imgUrl === null || imgUrl === undefined) ?
+                (
+                    <Avatar
+                        icon={<UserOutlined />}
+                        style={{ cursor: "pointer", marginLeft: 16 }}
+                        onClick={() => setIsUserMenuVisible(true)}
+                    />)
+                :
+                (<img src={imgUrl} alt={"profilePictureUrl"}
+                      style={{cursor: "pointer", marginLeft: 16, borderRadius: "50%", height: "3vw", width: "3vw" }}
+                      onClick={() => setIsUserMenuVisible(true)}
+                    />
+                )
         ) : isLoggedIn ? (
-          <Avatar
-            icon={<UserOutlined />}
-            style={{ cursor: "pointer" }}
-            onClick={() => setIsUserMenuVisible(true)}
-          />
+                (imgUrl === null || imgUrl === undefined) ?
+                    (
+                        <Avatar
+                            icon={<UserOutlined />}
+                            style={{ cursor: "pointer", marginLeft: 16 }}
+                            onClick={() => setIsUserMenuVisible(true)}
+                        />)
+                    :
+                    (<img src={imgUrl} alt={"profilePictureUrl"}
+                          style={{cursor: "pointer", marginLeft: 16, borderRadius: "50%", height: "3vw", width: "3vw"  }}
+                          onClick={() => setIsUserMenuVisible(true)}
+                        />
+
+                    )
         ) : (
           <>
             <Link to="/login">
