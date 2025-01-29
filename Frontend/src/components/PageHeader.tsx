@@ -93,8 +93,14 @@ const PageHeader = () => {
 
     useEffect(() => {
         setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-        if (isLoggedIn) fetchUserData();
+    }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchUserData();
+        }
     }, [isLoggedIn]);
+
 
 
 
