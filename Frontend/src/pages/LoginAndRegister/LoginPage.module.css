@@ -1,74 +1,93 @@
 .loginPage {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-
-
-.logo {
-    width: 200px;
-    height: 200px;
-    background-color: lightgray;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-}
-
-.logoSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50vw;
-    background-color: #fadb14;
-    height: 100vh;
-    padding: 10px;
-    margin: auto;
-}
-
-
-.loginHeader {
-    margin:5vh;
-    font-size: 8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
 }
 
 .loginContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 50vw;
-    height: 100vh;
+  background-color: black;
+  width: 50%;
+  padding: 40px;
+  text-align: center;
+  border-radius: 10px;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .loginContainer {
+    width: 70%;
+  }
+}
+
+.loginHeader {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.inputField {
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+}
+
+.inputField::placeholder {
+  color: white !important;
+  opacity: 0.8;
+}
+
+.inputLabel {
+  color: white !important;
+}
+
+.loginButton,
+.registerButton {
+  width: 30%;
+  margin-top: 10px;
+  padding: 10px 20px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .loginButton,
+  .registerButton {
+    width: auto;
+    min-width: 150px;
+    padding: 10px 20px;
+  }
 }
 
 .loginButton {
-    margin-top: 2vh;
-    background-color: #fadb14;
+  background-color: #fadb14;
+  color: black;
 }
 
 .loginButton:hover {
-    background-color: darkgoldenrod;
+  background-color: darkgoldenrod;
 }
 
 .registerButton {
-    margin-top: 2vh;
-    background-color: lightblue;
+  background-color: lightblue;
+  color: black;
 }
 
 .registerButton:hover {
-    background-color: darkgreen;
+  background-color: darkgreen;
 }
 
 .routeBackIcon {
-    font-size: 8vh;
-    cursor: pointer;
-    position: absolute;
-    top: 1.5vh;
-    left: 1.5vh;
-    color: black;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
 }
 
 .routeBackIcon:hover {
-    color: lightgray;
+  color: lightgray;
 }
