@@ -1,110 +1,226 @@
-import PageHeader from "../../components/PageHeader.tsx";
-import { Button, Col, Layout, Row } from "antd";
-import PageFooter from "../../components/PageFooter.tsx";
-import { Content } from "antd/es/layout/layout";
-import { useParams } from "react-router-dom";
-import { QuizSolve } from "../../types/types.ts";
+import type React from "react";
 import { useEffect, useState } from "react";
+import { Layout, Typography, Radio, Space, Button, message } from "antd";
+import { useParams } from "react-router-dom";
+import PageHeader from "../../components/PageHeader";
+import PageFooter from "../../components/PageFooter";
+import type { QuizSolve } from "../../types/types";
 
-const QuizSolving = () => {
-  const [quiz, setSolveQuizData] = useState<QuizSolve | null>(null);
+const { Content } = Layout;
+const { Title, Paragraph } = Typography;
 
-  let params = useParams();
-  useEffect(() => {
-    const fetchQuizData = async () => {
-      try {
-        let quizId = params.quizId;
-        let apiUrl = `https://quizzler-backend-1.onrender.com/api/quizzes/${quizId}/solve`;
-        const response = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}` || "",
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+interface QuizQuestion {
+    quiz_question_id: number;
+    question: string;
+    answers: QuizAnswer[];
+}
+
+interface QuizAnswer {
+    quiz_answer_id: number;
+    answer: string;
+}
+
+interface QuizResult {
+    quiz_result_id: number;
+    title: string;
+    description: string;
+    img_url: string;
+}
+
+interface QuizSelectedAnswers {
+    [key: number]: number;
+}
+
+const QuizSolving: React.FC = () => {
+    const [quiz, setQuizData] = useState<QuizSolve | null>(null);
+    const [selectedAnswers, setSelectedAnswers] = useState<QuizSelectedAnswers>(
+        {}
+    );
+    const [allQuestionsAnswered, setAllQuestionsAnswered] = useState(false);
+    const [quizResult, setQuizResult] = useState<any>(null);
+
+    const { quizId } = useParams<{ quizId: string }>();
+
+    useEffect(() => {
+        const fetchQuizData = async () => {
+            try {
+                const apiUrl = `https://quizzler-backend-1.onrender.com/api/quizzes/${quizId}/solve`;
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization:
+                            `Bearer ${localStorage.getItem("token")}` || "",
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                setQuizData(data);
+            } catch (error) {
+                console.error(
+                    "Error occurred while fetching quiz data: ",
+                    error
+                );
+            }
+        };
+
+        fetchQuizData();
+    }, [quizId]);
+
+    useEffect(() => {
+        if (
+            quiz &&
+            Object.keys(selectedAnswers).length === quiz.questions.length
+        ) {
+            setAllQuestionsAnswered(true);
+        } else {
+            setAllQuestionsAnswered(false);
         }
-        const data = await response.json();
-        console.log(data);
-        setSolveQuizData(data);
-      } catch (error) {
-        console.error("Error occured while fetching quiz data: ", error);
-      }
+    }, [selectedAnswers, quiz]);
+
+    const handleAnswerSelect = (questionId: number, answerId: number) => {
+        setSelectedAnswers((prev) => ({ ...prev, [questionId]: answerId }));
     };
 
-    fetchQuizData();
-  }, []);
+    const handleSubmit = async () => {
+        if (!allQuestionsAnswered) {
+            message.warning("Please answer all questions before submitting.");
+            return;
+        }
 
-  return (
-    <Layout
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <PageHeader />
+        try {
+            const response = await fetch(
+                `https://quizzler-backend-1.onrender.com/api/quizzes/${quizId}/submit`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization:
+                            `Bearer ${localStorage.getItem("token")}` || "",
+                    },
+                    body: JSON.stringify({ answers: selectedAnswers }),
+                }
+            );
 
-      <Content style={{ padding: "20px", flex: 1 }}>
-        {!quiz ? (
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "18px",
-              color: "#888",
-            }}
-          >
-            Nie znaleziono quizu.
-          </p>
-        ) : (
-          <div style={{ textAlign: "center" }}>
-            <h2>{quiz.name}</h2>
-            <img
-              src={quiz.img_url || "https://placehold.co/600x400"}
-              alt={quiz.name}
-              style={{ width: "300px", marginBottom: "20px" }}
-            />
-            <p>{quiz.description}</p>
+            if (!response.ok) {
+                throw new Error("Failed to submit quiz");
+            }
 
-            <div
-              style={{
-                textAlign: "center",
-                margin: "20px auto",
-                maxWidth: "600px",
-              }}
+            const result = await response.json();
+            setQuizResult(result);
+            message.success("Quiz submitted successfully!");
+        } catch (error) {
+            console.error("Error submitting quiz:", error);
+            message.error("Failed to submit quiz. Please try again.");
+        }
+    };
+
+    const renderQuestion = (question: QuizQuestion) => (
+        <div key={question.quiz_question_id} style={{ marginBottom: "30px" }}>
+            <Title level={4}>{question.question}</Title>
+            <Radio.Group
+                onChange={(e) =>
+                    handleAnswerSelect(
+                        question.quiz_question_id,
+                        e.target.value
+                    )
+                }
+                value={selectedAnswers[question.quiz_question_id]}
             >
-              {quiz.questions.map((question) => (
-                <div
-                  key={question.quiz_question_id}
-                  style={{
-                    marginBottom: "30px",
-                    padding: "15px",
-                    border: "1px solid #e8e8e8",
-                    borderRadius: "8px",
-                  }}
-                >
-                  <h3 style={{ marginBottom: "15px" }}>{question.question}</h3>
-                  <Row
-                    gutter={[16, 16]}
-                    justify="center"
-                    style={{ display: "flex" }}
-                  >
+                <Space direction="vertical">
                     {question.answers.map((answer) => (
-                      <Col>
-                        <Button type="primary">{answer.answer}</Button>
-                      </Col>
+                        <Radio
+                            key={answer.quiz_answer_id}
+                            value={answer.quiz_answer_id}
+                        >
+                            {answer.answer}
+                        </Radio>
                     ))}
-                  </Row>
-                </div>
-              ))}
+                </Space>
+            </Radio.Group>
+        </div>
+    );
+
+    const renderResult = () => {
+        if (!quizResult) return null;
+
+        const topResult = quizResult.topResult as QuizResult;
+        return (
+            <div style={{ marginTop: "30px", textAlign: "center" }}>
+                <Title level={3}>Your Quiz Result</Title>
+                <Title level={4}>{topResult.title}</Title>
+                <Paragraph>{topResult.description}</Paragraph>
+                {topResult.img_url && (
+                    <img
+                        src={topResult.img_url || "/placeholder.svg"}
+                        alt={topResult.title}
+                        style={{ maxWidth: "300px", marginTop: "20px" }}
+                    />
+                )}
+                <Paragraph>Total Points: {quizResult.totalPoints}</Paragraph>
             </div>
-          </div>
-        )}
-      </Content>
-      <PageFooter />
-    </Layout>
-  );
+        );
+    };
+
+    return (
+        <Layout
+            style={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            <PageHeader />
+            <Content
+                style={{ padding: "20px", flex: 1, backgroundColor: "#f5f5f5" }}
+            >
+                {!quiz ? (
+                    <Paragraph
+                        style={{
+                            textAlign: "center",
+                            fontSize: "18px",
+                            color: "#888",
+                        }}
+                    >
+                        Quiz not found.
+                    </Paragraph>
+                ) : (
+                    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+                        <Title level={2}>{quiz.name}</Title>
+                        {quiz.img_url && (
+                            <img
+                                src={quiz.img_url || "/placeholder.svg"}
+                                alt={quiz.name}
+                                style={{
+                                    width: "100%",
+                                    maxWidth: "300px",
+                                    marginBottom: "20px",
+                                }}
+                            />
+                        )}
+                        <Paragraph>{quiz.description}</Paragraph>
+
+                        {quiz.questions.map(renderQuestion)}
+
+                        {allQuestionsAnswered && !quizResult && (
+                            <Button
+                                type="primary"
+                                onClick={handleSubmit}
+                                style={{ marginTop: "20px" }}
+                            >
+                                Submit Quiz
+                            </Button>
+                        )}
+
+                        {renderResult()}
+                    </div>
+                )}
+            </Content>
+            <PageFooter />
+        </Layout>
+    );
 };
 
 export default QuizSolving;

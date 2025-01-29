@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Drawer, Button, Avatar } from "antd";
+import { Layout, Menu, Drawer, Button, Avatar, Input } from "antd";
 import { MenuOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
@@ -130,6 +130,7 @@ const PageHeader = () => {
         height: "64px",
       }}
     >
+      {/* Lewa sekcja: Nawigacja */}
       <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
         {viewportWidth >= 768 ? (
           <>
@@ -152,6 +153,7 @@ const PageHeader = () => {
         )}
       </div>
 
+      {/* Środek: QUIZZLER zamiast loga */}
       <div style={{ textAlign: "center", flex: 1 }}>
         <Link to="/">
           <h1 style={{ color: "white", fontSize: "24px", margin: 0 }}>
@@ -160,6 +162,7 @@ const PageHeader = () => {
         </Link>
       </div>
 
+      {/* Prawa sekcja: SearchBar + Konto/Logowanie */}
       <div
         style={{
           display: "flex",
@@ -177,20 +180,46 @@ const PageHeader = () => {
                 <Link to="/profile">
                   <Avatar
                     src={imgUrl || <UserOutlined />}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", backgroundColor: "white" }}
                   />
                 </Link>
-                <Button type="primary" onClick={handleLogout}>
+                <Button
+                  type="primary"
+                  style={{
+                    backgroundColor: "#0a410a",
+                    color: "white",
+                    border: "none",
+                  }}
+                  onClick={handleLogout}
+                >
                   Wyloguj się
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button type="primary">Zaloguj się</Button>
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: "#0a410a",
+                      color: "white",
+                      border: "none",
+                    }}
+                  >
+                    Zaloguj się
+                  </Button>
                 </Link>
                 <Link to="/register">
-                  <Button type="primary">Zarejestruj się</Button>
+                  <Button
+                    type="primary"
+                    style={{
+                      backgroundColor: "#0a410a",
+                      color: "white",
+                      border: "none",
+                    }}
+                  >
+                    Zarejestruj się
+                  </Button>
                 </Link>
               </>
             )}
@@ -203,15 +232,19 @@ const PageHeader = () => {
         )}
       </div>
 
+      {/* Drawer dla nawigacji w trybie mobilnym */}
       <Drawer
         open={isNavigationVisible}
         onClose={() => setIsNavigationVisible(false)}
         placement="left"
         width={250}
+        bodyStyle={{ backgroundColor: "#052b05" }}
+        headerStyle={{ backgroundColor: "#052b05", borderBottom: "none" }}
       >
         <Menu
           mode="vertical"
           theme="dark"
+          style={{ backgroundColor: "#052b05" }}
           items={[
             { key: "1", label: <Link to="/categories">Kategorie</Link> },
             { key: "2", label: <Link to="/add-quiz">Dodaj Quiz</Link> },
@@ -229,6 +262,47 @@ const PageHeader = () => {
                 },
           ]}
         />
+      </Drawer>
+
+      {/* Drawer dla wyszukiwania na małych ekranach */}
+      <Drawer
+        open={isSearchVisible}
+        onClose={() => setIsSearchVisible(false)}
+        placement="top"
+        height="100vh"
+        bodyStyle={{
+          backgroundColor: "#052b05",
+          padding: "16px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+        headerStyle={{ backgroundColor: "#052b05", borderBottom: "none" }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "20px",
+          }}
+        >
+          <SearchBar />
+        </div>
+        <Button
+          type="default"
+          style={{
+            marginTop: "20px",
+            backgroundColor: "white",
+            color: "#0a410a",
+            fontWeight: "bold",
+            fontSize: "16px",
+          }}
+          onClick={() => setIsSearchVisible(false)}
+        >
+          Zamknij
+        </Button>
       </Drawer>
     </Header>
   );
