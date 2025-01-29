@@ -18,15 +18,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredQuizzes, setFilteredQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchQuery.trim()) {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (searchQuery.trim() && viewportWidth >= 768) {
       fetchQuizzesByNameOrId(searchQuery);
     } else {
       setFilteredQuizzes([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery, viewportWidth]);
 
   const fetchQuizzesByNameOrId = async (query: string) => {
     setLoading(true);
@@ -39,17 +49,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
         throw new Error(`HTTP error! Status: ${response.status}`);
 
       const data = await response.json();
-      console.log("Pobrane quizy:", data);
-
       const quizzes = Array.isArray(data) ? data : data.quizzes || [];
-      console.log("Przetworzone quizy:", quizzes);
 
       const filteredData = quizzes.filter(
         (quiz) =>
           quiz.name?.toLowerCase().includes(query) ||
           quiz.quiz_id?.toString().includes(query)
       );
-      console.log("Sfiltrowane quizy:", filteredData);
+
       setFilteredQuizzes(filteredData);
     } catch (error) {
       console.error("Error przy pobieraniu quizów:", error);
@@ -87,7 +94,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         loading={loading}
         style={{ width: "100%" }}
       />
-      {filteredQuizzes.length > 0 && (
+
+      {/* NIE POKAZUJEMY PROPOZYCJI NA MAŁYCH EKRANACH */}
+      {filteredQuizzes.length > 0 && viewportWidth >= 768 && (
         <div
           style={{
             position: "absolute",
