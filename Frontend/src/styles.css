@@ -4,9 +4,9 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url("/quizzler_tlo.jpg") no-repeat center center fixed !important;
+  background: url("/quizzler_tlo.jpg") no-repeat center center fixed;
   background-size: cover !important;
-  color: white !important; /* Ustawienie domyślnego koloru tekstu na biały */
+  color: white !important;
 }
 
 /* Stylowanie nagłówka */
@@ -75,12 +75,7 @@ span {
 /* Dostosowanie listy kategorii i quizów do tła */
 .ant-card,
 .ant-card-body {
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ) !important; /* Półprzezroczyste tło dla czytelności */
+  background: rgba(0, 0, 0, 0.5) !important;
   color: white !important;
 }
 
@@ -90,9 +85,9 @@ span {
 }
 
 /* Stylowanie dividerów */
-.ant-divider {
+/* .ant-divider {
   background-color: white !important;
-}
+} */
 /* Search bar na biało */
 .ant-input {
   background-color: rgb(8, 23, 12) !important;
@@ -124,11 +119,6 @@ span {
   color: white !important;
 }
 
-/* Usunięcie podkreślenia z linków */
-.ant-layout-header a {
-  text-decoration: none;
-}
-
 /* Stylowanie przycisków w nagłówku */
 .ant-layout-header button {
   color: white !important;
@@ -136,11 +126,6 @@ span {
   border: none !important;
   font-size: 16px;
   cursor: pointer;
-}
-
-/* Stylowanie hover dla przycisków */
-.ant-layout-header button:hover {
-  text-decoration: underline;
 }
 
 /* Stylowanie nagłówka */
@@ -152,7 +137,6 @@ span {
   height: 64px !important;
 }
 
-/* Usunięcie podkreślenia z tekstu na przyciskach */
 .header-button {
   color: white !important;
   background: none !important;
@@ -163,11 +147,10 @@ span {
   text-decoration: none !important;
 }
 
-/* Efekt hover dla przycisków */
 .header-button:hover {
   text-decoration: none !important;
 }
-/* QUIZZLER (środek nagłówka) */
+
 .ant-layout-header h1 {
   color: white;
   font-size: 24px;
