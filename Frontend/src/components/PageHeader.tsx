@@ -239,13 +239,16 @@ const PageHeader = () => {
         onClose={() => setIsNavigationVisible(false)}
         placement="left"
         width={250}
-        bodyStyle={{ backgroundColor: "#052b05" }}
+        bodyStyle={{ backgroundColor: "#052b05", display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        }}
         headerStyle={{ backgroundColor: "#052b05", borderBottom: "none" }}
       >
         <Menu
           mode="vertical"
           theme="dark"
-          style={{ backgroundColor: "#052b05" }}
+          style={{ backgroundColor: "#052b05", textAlign: "center" }}
           items={[
             { key: "1", label: <Link to="/categories">Kategorie</Link> },
             { key: "2", label: <Link to="/add-quiz">Dodaj Quiz</Link> },
@@ -255,7 +258,7 @@ const PageHeader = () => {
             isLoggedIn
               ? {
                   key: "5",
-                  label: <Button onClick={handleLogout}>Wyloguj się</Button>,
+                      label: <Button onClick={handleLogout}>Wyloguj się</Button>,
                 }
               : {
                   key: "6",
