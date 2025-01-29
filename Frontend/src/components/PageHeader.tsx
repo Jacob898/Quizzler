@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Drawer, Button, Avatar, Input } from "antd";
-import {
-  MenuOutlined,
-  SearchOutlined,
-  UserOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { Layout, Menu, Drawer, Button, Avatar } from "antd";
+import { MenuOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
@@ -15,16 +10,67 @@ const PageHeader = () => {
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
-  const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
-  const navigate = useNavigate();
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
-  const user_id = localStorage.getItem("userID");
-  let user_token = localStorage.getItem("token");
-  let refresh_token = localStorage.getItem("refreshToken");
+  const navigate = useNavigate();
 
-  const refreshAccessToken = async () => {
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUserData();
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
+  const fetchUserData = async () => {
+    const user_id = localStorage.getItem("userID");
+    let user_token = localStorage.getItem("token");
+    let refresh_token = localStorage.getItem("refreshToken");
+
+    try {
+      const response = await fetch(
+        `https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user_token}`,
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        user_token = await refreshAccessToken(refresh_token);
+        if (user_token) {
+          return fetchUserData();
+        }
+      }
+
+      const data = await response.json();
+      setImgUrl(data.img_url);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const refreshAccessToken = async (refresh_token) => {
     try {
       const response = await fetch(
         "https://quizzler-backend-1.onrender.com/api/auth/refresh-token",
@@ -39,106 +85,11 @@ const PageHeader = () => {
       const data = await response.json();
       localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem("token", data.accessToken);
-      user_token = data.accessToken;
-      refresh_token = data.refreshToken;
-      return user_token;
+      return data.accessToken;
     } catch (error) {
-      console.log("Error refreshing token", error);
+      console.error("Error refreshing token:", error);
       handleLogout();
     }
-  };
-
-  const fetchUserData = async () => {
-    try {
-      const response = await fetch(
-        `https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${user_token}`,
-          },
-        }
-      );
-
-      if (response.status === 401) {
-        const newToken = await refreshAccessToken();
-        if (newToken) {
-          return fetchUserData();
-        }
-      }
-
-      const data = await response.json();
-      setImgUrl(data.img_url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchUserData();
-    }
-  }, [isLoggedIn]);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    navigate("/");
-  };
-
-  // Quiz data - temp
-  const staticData: SearchItem[] = [];
-
-  // userMenuItems
-  const userMenuItems = [
-    { key: "1", label: "Konto", target: "/profile" },
-    { key: "2", label: "Wyloguj się", onClick: handleLogout, danger: true },
-  ];
-
-  // navigation
-  const navigation = [
-    { key: "1", label: "Kategorie", target: "/categories" },
-    { key: "2", label: "Dodaj Quiz", target: "/add-quiz" },
-  ];
-
-  const handleNavigationClick = ({ key }: { key: string }) => {
-    const { target } = navigation.find((item) => item.key === key) || {};
-    if (target) {
-      navigate(target);
-    }
-  };
-
-  const handleMenuClick = ({ key }: { key: string }) => {
-    const item = userMenuItems.find((menuItem) => menuItem.key === key);
-    if (item) {
-      if (item.target) {
-        navigate(item.target);
-      } else if (item.onClick) {
-        item.onClick();
-      }
-    }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    navigate("/");
   };
 
   return (
@@ -155,73 +106,36 @@ const PageHeader = () => {
         height: "64px",
       }}
     >
-      {/* Lewa sekcja: Nawigacja */}
       <div style={{ display: "flex", alignItems: "center", flex: 1 }}>
         {viewportWidth >= 768 ? (
           <>
             <Link to="/categories">
-              <Button
-                type="text"
-                style={{
-                  color: "white",
-                  backgroundColor: "#0a410a",
-                  border: "none",
-                }}
-              >
+              <Button type="text" style={{ color: "white" }}>
                 Kategorie
               </Button>
             </Link>
             <Link to="/add-quiz">
-              <Button
-                type="text"
-                style={{
-                  color: "white",
-                  backgroundColor: "#0a410a",
-                  border: "none",
-                }}
-              >
+              <Button type="text" style={{ color: "white" }}>
                 Dodaj Quiz
               </Button>
             </Link>
           </>
         ) : (
           <MenuOutlined
-            style={{
-              fontSize: 24,
-              color: "white",
-              cursor: "pointer",
-            }}
+            style={{ fontSize: 24, color: "white", cursor: "pointer" }}
             onClick={() => setIsNavigationVisible(true)}
           />
         )}
       </div>
 
-      {/* Środek: QUIZZLER zamiast loga */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flex: 1,
-          height: "100%",
-        }}
-      >
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <h1
-            style={{
-              color: "white",
-              fontSize: "24px",
-              fontWeight: "bold",
-              margin: 0,
-              letterSpacing: "2px",
-            }}
-          >
+      <div style={{ textAlign: "center", flex: 1 }}>
+        <Link to="/">
+          <h1 style={{ color: "white", fontSize: "24px", margin: 0 }}>
             QUIZZLER
           </h1>
         </Link>
       </div>
 
-      {/* Prawa sekcja: SearchBar + Konto/Logowanie */}
       <div
         style={{
           display: "flex",
@@ -239,75 +153,41 @@ const PageHeader = () => {
                 <Link to="/profile">
                   <Avatar
                     src={imgUrl || <UserOutlined />}
-                    style={{ cursor: "pointer", backgroundColor: "white" }}
+                    style={{ cursor: "pointer" }}
                   />
                 </Link>
-                <Button
-                  type="primary"
-                  style={{
-                    backgroundColor: "#0a410a",
-                    color: "white",
-                    border: "none",
-                  }}
-                  onClick={handleLogout}
-                >
+                <Button type="primary" onClick={handleLogout}>
                   Wyloguj się
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button
-                    type="primary"
-                    style={{
-                      backgroundColor: "#0a410a",
-                      color: "white",
-                      border: "none",
-                    }}
-                  >
-                    Zaloguj się
-                  </Button>
+                  <Button type="primary">Zaloguj się</Button>
                 </Link>
                 <Link to="/register">
-                  <Button
-                    type="primary"
-                    style={{
-                      backgroundColor: "#0a410a",
-                      color: "white",
-                      border: "none",
-                    }}
-                  >
-                    Zarejestruj się
-                  </Button>
+                  <Button type="primary">Zarejestruj się</Button>
                 </Link>
               </>
             )}
           </>
         ) : (
           <SearchOutlined
-            style={{
-              fontSize: 24,
-              color: "white",
-              cursor: "pointer",
-            }}
+            style={{ fontSize: 24, color: "white", cursor: "pointer" }}
             onClick={() => setIsSearchVisible(true)}
           />
         )}
       </div>
 
-      {/* Drawer dla NAWIGACJI na małych ekranach */}
       <Drawer
         open={isNavigationVisible}
         onClose={() => setIsNavigationVisible(false)}
         placement="left"
         width={250}
-        bodyStyle={{ backgroundColor: "#052b05" }}
-        headerStyle={{ display: "none" }}
       >
         <Menu
           mode="vertical"
           theme="dark"
-          style={{ backgroundColor: "#052b05" }}
           items={[
             { key: "1", label: <Link to="/categories">Kategorie</Link> },
             { key: "2", label: <Link to="/add-quiz">Dodaj Quiz</Link> },
@@ -317,88 +197,15 @@ const PageHeader = () => {
             isLoggedIn
               ? {
                   key: "5",
-                  label: (
-                    <Link to="/" onClick={handleLogout}>
-                      Wyloguj się
-                    </Link>
-                  ),
+                  label: <Button onClick={handleLogout}>Wyloguj się</Button>,
                 }
               : {
                   key: "6",
                   label: <Link to="/register">Zarejestruj się</Link>,
                 },
           ]}
-          onClick={() => setIsNavigationVisible(false)}
         />
       </Drawer>
-
-      {/* Drawer dla WYSZUKIWANIA na małych ekranach */}
-      <Drawer
-        open={isSearchVisible}
-        onClose={() => setIsSearchVisible(false)}
-        placement="top"
-        height="100vh"
-        bodyStyle={{
-          backgroundColor: "#052b05",
-          padding: "16px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          height: "100vh",
-        }}
-        headerStyle={{ display: "none" }}
-      >
-        <SearchBar />
-
-        <Button
-          type="default"
-          style={{
-            marginTop: "20px",
-            backgroundColor: "white",
-            color: "#0a410a",
-            fontWeight: "bold",
-            fontSize: "16px",
-          }}
-          onClick={() => setIsSearchVisible(false)}
-        >
-          Zamknij
-        </Button>
-      </Drawer>
-      {/* <Drawer
-        open={isSearchVisible}
-        onClose={() => setIsSearchVisible(false)}
-        placement="top"
-        height="100vh"
-        bodyStyle={{
-          backgroundColor: "#052b05",
-          padding: "16px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-        }}
-        headerStyle={{ display: "none" }}
-      >
-        <h2 style={{ color: "white", marginBottom: "10px", fontSize: "24px" }}>
-          Szukaj quizu
-        </h2>
-        <SearchBar />
-        <Button
-          type="default"
-          style={{
-            marginTop: "20px",
-            backgroundColor: "white",
-            color: "#0a410a",
-            fontWeight: "bold",
-            fontSize: "16px",
-          }}
-          onClick={() => setIsSearchVisible(false)}
-        >
-          Zamknij
-        </Button>
-      </Drawer> */}
     </Header>
   );
 };
