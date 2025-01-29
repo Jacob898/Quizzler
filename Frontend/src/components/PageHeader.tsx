@@ -70,28 +70,6 @@ const PageHeader = () => {
     }
   };
 
-  const refreshAccessToken = async (refresh_token) => {
-    try {
-      const response = await fetch(
-        "https://quizzler-backend-1.onrender.com/api/auth/refresh-token",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken: refresh_token }),
-        }
-      );
-
-      if (!response.ok) throw new Error("Failed to refresh token");
-      const data = await response.json();
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("token", data.accessToken);
-      return data.accessToken;
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      handleLogout();
-    }
-  };
-
   return (
     <Header
       style={{
@@ -145,38 +123,10 @@ const PageHeader = () => {
           gap: "12px",
         }}
       >
-        {viewportWidth >= 768 ? (
-          <>
-            <SearchBar />
-            {isLoggedIn ? (
-              <>
-                <Link to="/profile">
-                  <Avatar
-                    src={imgUrl || <UserOutlined />}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Link>
-                <Button type="primary" onClick={handleLogout}>
-                  Wyloguj się
-                </Button>
-              </>
-            ) : (
-              <>
-                <Link to="/login">
-                  <Button type="primary">Zaloguj się</Button>
-                </Link>
-                <Link to="/register">
-                  <Button type="primary">Zarejestruj się</Button>
-                </Link>
-              </>
-            )}
-          </>
-        ) : (
-          <SearchOutlined
-            style={{ fontSize: 24, color: "white", cursor: "pointer" }}
-            onClick={() => setIsSearchVisible(true)}
-          />
-        )}
+        <SearchOutlined
+          style={{ fontSize: 24, color: "white", cursor: "pointer" }}
+          onClick={() => setIsSearchVisible(true)}
+        />
       </div>
 
       <Drawer
@@ -184,10 +134,13 @@ const PageHeader = () => {
         onClose={() => setIsNavigationVisible(false)}
         placement="left"
         width={250}
+        bodyStyle={{ backgroundColor: "#052b05" }}
+        headerStyle={{ backgroundColor: "#052b05", borderBottom: "none" }}
       >
         <Menu
           mode="vertical"
           theme="dark"
+          style={{ backgroundColor: "#052b05" }}
           items={[
             { key: "1", label: <Link to="/categories">Kategorie</Link> },
             { key: "2", label: <Link to="/add-quiz">Dodaj Quiz</Link> },
@@ -205,6 +158,46 @@ const PageHeader = () => {
                 },
           ]}
         />
+      </Drawer>
+
+      <Drawer
+        open={isSearchVisible}
+        onClose={() => setIsSearchVisible(false)}
+        placement="top"
+        height="100vh"
+        bodyStyle={{
+          backgroundColor: "#052b05",
+          padding: "16px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+        headerStyle={{ backgroundColor: "#052b05", borderBottom: "none" }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "20px",
+          }}
+        >
+          <SearchBar />
+        </div>
+        <Button
+          type="default"
+          style={{
+            marginTop: "20px",
+            backgroundColor: "white",
+            color: "#0a410a",
+            fontWeight: "bold",
+            fontSize: "16px",
+          }}
+          onClick={() => setIsSearchVisible(false)}
+        >
+          Zamknij
+        </Button>
       </Drawer>
     </Header>
   );
