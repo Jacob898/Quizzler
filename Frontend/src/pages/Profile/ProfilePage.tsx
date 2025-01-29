@@ -84,7 +84,7 @@ const ProfilePage = () => {
                     )}
 
                 <p style={{
-                    padding: "20px",
+                    padding: "5vh",
                     fontSize: "8vh"
                 }}>{username}</p>
 
@@ -122,7 +122,7 @@ const ProfilePage = () => {
                                 </div>
                             ))
                     ) : (
-                        <p>Brak historii quizów</p>
+                        <h2 style={{margin: "5vh"}}>Brak historii quizów</h2>
                         )}
                 </div>
             </div>
