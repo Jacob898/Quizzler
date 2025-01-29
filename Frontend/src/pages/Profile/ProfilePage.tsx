@@ -1,19 +1,9 @@
 import {Avatar, Layout} from "antd";
 import PageHeader from "../../components/PageHeader.tsx";
 import PageFooter from "../../components/PageFooter.tsx";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {UserOutlined} from "@ant-design/icons";
 
-interface userProfile {
-   username: string;
-   profilePictureUrl: string;
-
-}
-
-const dummyUser: userProfile = {
-    username: "RyanGosling",
-    profilePictureUrl: "https://fwcdn.pl/fph/48/00/754800/1151700_2.8.jpg",
-}
 
 
 const usersQuizzes = [
