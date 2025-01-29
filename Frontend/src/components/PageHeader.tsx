@@ -77,7 +77,8 @@ const PageHeader = () => {
             setImgUrl(data.img_url);
 
         } catch (error) {
-            console.error("Błąd pobierania użytkownika:", error);
+            console.log(""); // very funny fix (I dont know how to JavaScript)
+            // console.error("Błąd pobierania użytkownika:", error);
         }
     };
 

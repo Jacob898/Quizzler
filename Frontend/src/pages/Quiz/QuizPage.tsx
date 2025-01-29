@@ -15,6 +15,33 @@ const QuizPage = () => {
   let params = useParams();
   const quizId = params.quizId;
 
+
+  //-- fetching current User username
+  const [username, setUsername] = useState("");
+  const user_id = localStorage.getItem("userID");
+  const user_token  = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${user_token}`
+          }
+        });
+        const data = await response.json();
+        setUsername(data.email);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchUserData();
+
+  },[])
+
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
@@ -105,8 +132,10 @@ const QuizPage = () => {
         throw new Error("Failed to add review");
       }
 
+
       const newReview = await response.json();
       const userEmail = await fetchUserEmail(newReview.user_id);
+
 
       setReviews((prevReviews) =>
         [{ ...newReview, User: { email: userEmail } }, ...prevReviews].sort(
@@ -119,6 +148,30 @@ const QuizPage = () => {
       console.error("Error adding review:", error);
     }
   };
+
+  const handleDeleteReview = async (review_ID) => {
+    try {
+      const response = await fetch(`https://quizzler-backend-1.onrender.com/api/reviews/${review_ID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("token")}` || "",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete review");
+      }
+
+      setReviews((prevReviews) =>
+          prevReviews.filter((review) => review.quiz_review_id !== review_ID)
+      );
+
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
+  };
+
 
   return (
     <Layout
@@ -201,6 +254,14 @@ const QuizPage = () => {
                     <p style={{ fontSize: "12px", color: "#888" }}>
                       {new Date(review.createdAt).toLocaleString()}
                     </p>
+
+                    {review.User.email === username && (
+                        <Button onClick={() => handleDeleteReview(review.quiz_review_id)} danger>
+                          Usuń opinię
+                        </Button>
+                    )}
+
+
                   </div>
                 ))
               )}
