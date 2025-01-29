@@ -52,7 +52,7 @@ const ProfilePage = () => {
         }
         fetchUserData();
         fetchQuizHistoryData();
-    },[])
+    },[user_id, user_token])
 
     const formatDateTime = (dateString: string | number | Date) => {
         const date = new Date(dateString);
@@ -93,25 +93,31 @@ const ProfilePage = () => {
                     fontSize: "4vh",
                 }}>Historia Quizów</p>
 
-                <div>
+                <div style={{ display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center", }}>
                     {userQuizzes.length > 0 ? (
                         userQuizzes.map((quiz,index) => (
                                 <div key={index} style={{
                                     display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "center",
+                                    flexDirection: "column",
+                                    width: "60vh",
+                                    height: "20vh",
                                     margin: "20px",
+                                    padding: "20px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    maxWidth: "400px",
+                                    backgroundColor: "black",
+                                    gap: "3vh",
                                 }}>
-                                    <div style={{
-                                        padding: "20px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "column",
-                                    }}>
-                                        Nazwa quizu: {quiz.quiz.name}
-                                        Wynik: {quiz.result.title}
+
+                                        <h3>{quiz.quiz.name}</h3>
+                                        <p>Wynik: {quiz.result.title}</p>
                                         <small>{formatDateTime(quiz.takenAt)}</small>
-                                    </div>
 
                                 </div>
                             ))
@@ -119,9 +125,6 @@ const ProfilePage = () => {
                         <p>Brak historii quizów</p>
                         )}
                 </div>
-
-
-
             </div>
 
             <PageFooter/>
