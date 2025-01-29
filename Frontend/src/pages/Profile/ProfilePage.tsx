@@ -6,28 +6,13 @@ import {UserOutlined} from "@ant-design/icons";
 
 
 
-const usersQuizzes = [
-    {
-        quizTitle: "quiz 1",
-        quizImageUrl: "https://fakeimg.pl/200x100",
-        quizResult: "odpowiedź 1",
-        quizRating: 5
-    },
-    {
-        quizTitle: "quiz 2",
-        quizImageUrl: "https://fakeimg.pl/200x100",
-        quizResult: "odpowiedź 3",
-        quizRating: 3
-    }
-];
-
-
 
 
 const ProfilePage = () => {
 
     const [username, setUsername] = useState("");
     const [imgUrl, setImgUrl] = useState("");
+    const [userQuizzes, setUserQuizzes] = useState([]);
     const user_id = localStorage.getItem("userID");
     const user_token  = localStorage.getItem("token");
 
@@ -50,9 +35,37 @@ const ProfilePage = () => {
             }
         }
 
+        const fetchQuizHistoryData = async () => {
+            try {
+                const response = await fetch(`https://quizzler-backend-1.onrender.com/api/quiz-history/user-results/${user_id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authorization": `Bearer ${user_token}`
+                    }
+                });
+                const data = await response.json();
+                setUserQuizzes(data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
         fetchUserData();
-        
+        fetchQuizHistoryData();
     },[])
+
+    const formatDateTime = (dateString: string | number | Date) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("pl-PL", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        }) + " " + date.toLocaleTimeString("pl-PL", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+        });
+    };
 
     return (
         <Layout>
@@ -70,7 +83,6 @@ const ProfilePage = () => {
                      style={{width: "10vw",height: "10vw", borderRadius: "50%" }}/>
                     )}
 
-
                 <p style={{
                     padding: "20px",
                     fontSize: "8vh"
@@ -82,34 +94,30 @@ const ProfilePage = () => {
                 }}>Historia Quizów</p>
 
                 <div>
-                    {usersQuizzes.map((quiz,index) => (
-                        <div key={index} style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            margin: "20px",
-                        }}>
+                    {userQuizzes.length > 0 ? (
+                        userQuizzes.map((quiz,index) => (
+                                <div key={index} style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    margin: "20px",
+                                }}>
+                                    <div style={{
+                                        padding: "20px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                    }}>
+                                        Nazwa quizu: {quiz.quiz.name}
+                                        Wynik: {quiz.result.title}
+                                        <small>{formatDateTime(quiz.takenAt)}</small>
+                                    </div>
 
-                            <div style={{
-                                padding: "20px",
-                            }}>
-                                <img src={quiz.quizImageUrl} alt={"quizImage"}></img>
-                            </div>
-
-                            <div style={{
-                                padding: "20px",
-                                display: "flex",
-                                alignItems: "center",
-                                flexDirection: "column",
-                            }}>
-                                {quiz.quizTitle}
-                                {quiz.quizResult}
-                                {quiz.quizRating}
-
-                            </div>
-
-                        </div>
-                    ))}
+                                </div>
+                            ))
+                    ) : (
+                        <p>Brak historii quizów</p>
+                        )}
                 </div>
 
 
