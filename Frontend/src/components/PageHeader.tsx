@@ -37,43 +37,69 @@ const PageHeader = () => {
   const [isNavigationVisible, setIsNavigationVisible] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
+  const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
-    const user_id = localStorage.getItem("userID");
-    const user_token  = localStorage.getItem("token");
+  const user_id = localStorage.getItem("userID");
+  let user_token  = localStorage.getItem("token");
+  let refresh_token =localStorage.getItem("refreshToken");
 
+    const refreshAccessToken = async () => {
+        try {
+            const response = await fetch("https://quizzler-backend-1.onrender.com/api/auth/refresh-token", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ refreshToken: refresh_token })
+            });
+
+            if (!response.ok) throw new Error("Failed to refresh token");
+            const data = await response.json();
+            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("token", data.accessToken);
+            user_token = data.accessToken;
+            refresh_token = data.refreshToken;
+            return user_token;
+        } catch (error) {
+            console.log("Error refreshing token", error);
+            handleLogout();
+        }
+    };
+
+    const fetchUserData = async () => {
+        try {
+            const response = await fetch(`https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${user_token}`
+                }
+            });
+
+            if (response.status === 401) {
+                const newToken = await refreshAccessToken();
+                if (newToken) {
+                    return fetchUserData();
+                }
+            }
+
+            const data = await response.json();
+            setImgUrl(data.img_url);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        const status = localStorage.getItem("isLoggedIn") === "true";
-        setIsLoggedIn(status);
-
-        const fetchUserData = async () => {
-            try {
-                const response = await fetch(`https://quizzler-backend-1.onrender.com/api/users/profile/${user_id}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "authorization": `Bearer ${user_token}`
-                    }
-                });
-                const data = await response.json();
-                setImgUrl(data.img_url);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        fetchUserData();
+        setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+        if (isLoggedIn) fetchUserData();
+    }, [isLoggedIn]);
 
 
-    }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("userID");
+        localStorage.clear();
         setIsLoggedIn(false);
         navigate("/");
     };
@@ -92,8 +118,6 @@ const PageHeader = () => {
     { key: "1", label: "Kategorie", target: "/categories" },
     { key: "2", label: "Dodaj Quiz", target: "/add-quiz" },
   ];
-
-  const navigate = useNavigate();
 
   const handleNavigationClick = ({ key }: { key: string }) => {
     const { target } = navigation.find((item) => item.key === key) || {};
