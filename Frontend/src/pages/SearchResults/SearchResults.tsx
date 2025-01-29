@@ -26,19 +26,19 @@ const SearchResults = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
-        console.log("Fetched quizzes:", data);
+        console.log("Pobrane quizy:", data);
         const quizzes = Array.isArray(data) ? data : data.quizzes || [];
-        console.log("Processed quizzes:", quizzes);
+        console.log("Przetworzone quizy:", quizzes);
 
         const filteredData = quizzes.filter(
           (quiz) =>
             quiz.name?.toLowerCase().includes(query) ||
             quiz.quiz_id?.toString().includes(query)
         );
-        console.log("Filtered quizzes:", filteredData);
+        console.log("Sfiltrowane quizy:", filteredData);
         setFilteredQuizzes(filteredData);
       } catch (error) {
-        console.error("Error fetching quizzes:", error);
+        console.error("Error przy pobieraniu quizów:", error);
       } finally {
         setLoading(false);
       }
