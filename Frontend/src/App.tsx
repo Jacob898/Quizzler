@@ -10,47 +10,43 @@ import LoginPage from "./pages/LoginAndRegister/LoginPage.tsx";
 import RegisterPage from "./pages/LoginAndRegister/RegisterPage.tsx";
 import ProfilePage from "./pages/Profile/ProfilePage.tsx";
 import SearchResults from "./pages/SearchResults/SearchResults.tsx";
+import "./styles.css";
+import "./App.css";
 
 function App() {
-    return (
-        <>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/editor" element={<QuizEditor />} />
-                    <Route path="/categories" element={<Categories />} />
-                    <Route path="/add-quiz" element={<QuizEditor />} />
-                    <Route path="/categories" element={<Categories />} />
-                    <Route
-                        path="/categories/:categoryId"
-                        element={<CategoryDetails />}
-                    />
-                    <Route
-                        path="/categories/:categoryId/quiz/:quizId"
-                        element={<QuizPage />}
-                    />
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/editor" element={<QuizEditor />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/add-quiz" element={<QuizEditor />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/:categoryId" element={<CategoryDetails />} />
+          <Route
+            path="/categories/:categoryId/quiz/:quizId"
+            element={<QuizPage />}
+          />
 
-                    <Route path="/quiz/:quizId" element={<QuizPage />} />
+          <Route path="/quiz/:quizId" element={<QuizPage />} />
 
-                    <Route
-                        path="/categories/:categoryId/quiz/:quizId/solve"
-                        element={<QuizSolving />}
-                    />
+          <Route
+            path="/categories/:categoryId/quiz/:quizId/solve"
+            element={<QuizSolving />}
+          />
 
-                    <Route
-                        path="/quiz/:quizId/solve"
-                        element={<QuizSolving />}
-                    />
+          <Route path="/quiz/:quizId/solve" element={<QuizSolving />} />
 
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/search" element={<SearchResults />} />
-                    <Route path="*" element={<NoPage />} />
-                </Routes>
-            </BrowserRouter>
-        </>
-    );
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="*" element={<NoPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
