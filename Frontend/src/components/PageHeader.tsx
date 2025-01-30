@@ -250,9 +250,11 @@ const PageHeader = () => {
         onClose={() => setIsNavigationVisible(false)}
         placement="left"
         width={250}
-        bodyStyle={{ backgroundColor: "#052b05", display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+        bodyStyle={{
+          backgroundColor: "#052b05",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
         headerStyle={{ backgroundColor: "#052b05", borderBottom: "none" }}
       >
@@ -269,7 +271,19 @@ const PageHeader = () => {
             isLoggedIn
               ? {
                   key: "5",
-                      label: <Button onClick={handleLogout}>Wyloguj się</Button>,
+                  label: (
+                    <Button
+                      onClick={handleLogout}
+                      style={{
+                        whiteSpace: "nowrap",
+                        width: "100%",
+                        textAlign: "center",
+                        overflow: "hidden",
+                      }}
+                    >
+                      Wyloguj się
+                    </Button>
+                  ),
                 }
               : {
                   key: "6",
