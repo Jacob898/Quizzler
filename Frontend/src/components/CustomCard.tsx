@@ -17,7 +17,13 @@ const CustomCard = ({ title, description, image }: CustomCardProps) => {
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 hoverable
-                cover={<img alt={title} src={image} />}
+                cover={
+                    <img
+                        style={{ width: 480, height: 250 }}
+                        alt={title}
+                        src={image}
+                    />
+                }
                 style={{
                     // transition: "0.3s",
                     position: "relative",

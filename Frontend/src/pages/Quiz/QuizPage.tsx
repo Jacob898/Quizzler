@@ -294,14 +294,14 @@ const QuizPage = () => {
 
                         <div className="quiz-description">
                             <p>{quizData.description}</p>
-                            <Button
-                                type="primary"
-                                className="solve-quiz-button"
-                            >
-                                <Link to={`/quiz/${quizData.quiz_id}/solve`}>
+                            <Link to={`/quiz/${quizData.quiz_id}/solve`}>
+                                <Button
+                                    type="primary"
+                                    className="solve-quiz-button"
+                                >
                                     Rozwiąż quiz
-                                </Link>
-                            </Button>
+                                </Button>
+                            </Link>
                             {adminsId.includes(Number(user_id)) ? (
                                 <Button
                                     type="primary"
