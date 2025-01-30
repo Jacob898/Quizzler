@@ -1,4 +1,4 @@
-import { Button, Card, Layout, Steps } from "antd";
+import { Button, Card, ConfigProvider, Layout, Steps, theme } from "antd";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
 import { useState } from "react";
@@ -35,6 +35,8 @@ interface QuizData {
     results: QuizResult[];
     questions: QuizQuestion[];
 }
+
+const { darkAlgorithm } = theme;
 
 const QuizEditor = () => {
     const [currentStep, setCurrentStep] = useState(0);
@@ -130,40 +132,103 @@ const QuizEditor = () => {
     };
 
     return (
-        <Layout style={{ minHeight: "100vh" }}>
-            <PageHeader />
-            <Content style={{ padding: "20px", flex: 1 }}>
-                <div className="max-w-4xl mx-auto p-4">
-                    <Card title="Utwórz nowy quiz">
-                        <Steps
-                            current={currentStep}
-                            items={steps}
-                            className="mb-8"
-                        />
-                        <div className="min-h-[400px] p-4 bg-gray-50 rounded-lg">
-                            {steps[currentStep].content}
-                        </div>
-                        <div className="mt-8 flex justify-end gap-4">
-                            {currentStep > 0 && (
-                                <Button onClick={prev}>Cofnij</Button>
-                            )}
-                            {currentStep < steps.length - 1 && (
-                                <Button type="primary" onClick={next}>
-                                    Dalej
-                                </Button>
-                            )}
-                            {currentStep === steps.length - 1 && (
-                                <Button type="primary" onClick={handleSubmit}>
-                                    Utwórz quiz
-                                </Button>
-                            )}
-                        </div>
-                    </Card>
-                </div>
-                <button onClick={() => console.log(quizData)}>XDDDDDD</button>
-            </Content>
-            <PageFooter />
-        </Layout>
+        <ConfigProvider
+            theme={{
+                algorithm: darkAlgorithm,
+                token: {
+                    colorPrimary: "#00FF00", // Neon green for primary elements
+                    colorTextBase: "#FFFFFF", // White text
+                    colorBgContainer: "#000000", // Black background
+                    colorBorder: "#00FF00", // Neon green borders
+                },
+            }}
+        >
+            <Layout style={{ minHeight: "100vh", backgroundColor: "#000000" }}>
+                <PageHeader />
+                <Content style={{ padding: "20px" }}>
+                    <div className="max-w-4xl mx-auto p-4">
+                        <Card
+                            title="Utwórz nowy quiz"
+                            headStyle={{
+                                color: "#00FF00",
+                                borderBottom: "1px solid #00FF00",
+                            }}
+                            bodyStyle={{
+                                backgroundColor: "#000000",
+                                color: "#FFFFFF",
+                            }}
+                        >
+                            <Steps
+                                current={currentStep}
+                                items={steps}
+                                style={{ marginBottom: "16px" }}
+                            />
+                            <div
+                                style={{
+                                    minHeight: "400px",
+                                    padding: "16px",
+                                    backgroundColor: "#111111",
+                                    borderRadius: "8px",
+                                    color: "#FFFFFF",
+                                    border: "1px solid #00FF00",
+                                }}
+                            >
+                                {steps[currentStep].content}
+                            </div>
+                            <div
+                                className="mt-8 flex justify-end gap-4"
+                                style={{
+                                    marginTop: 20,
+                                    display: "flex",
+                                    gap: 20,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                {currentStep > 0 && (
+                                    <Button
+                                        style={{
+                                            color: "#FFFFFF",
+                                            borderColor: "#00FF00",
+                                        }}
+                                        onClick={prev}
+                                    >
+                                        Cofnij
+                                    </Button>
+                                )}
+                                {currentStep < steps.length - 1 && (
+                                    <Button
+                                        type="primary"
+                                        style={{
+                                            backgroundColor: "#00FF00",
+                                            borderColor: "#00FF00",
+                                            color: "#000000",
+                                        }}
+                                        onClick={next}
+                                    >
+                                        Dalej
+                                    </Button>
+                                )}
+                                {currentStep === steps.length - 1 && (
+                                    <Button
+                                        type="primary"
+                                        style={{
+                                            backgroundColor: "#00FF00",
+                                            borderColor: "#00FF00",
+                                            color: "#000000",
+                                        }}
+                                        onClick={handleSubmit}
+                                    >
+                                        Utwórz quiz
+                                    </Button>
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+                </Content>
+                <PageFooter />
+            </Layout>
+        </ConfigProvider>
     );
 };
 

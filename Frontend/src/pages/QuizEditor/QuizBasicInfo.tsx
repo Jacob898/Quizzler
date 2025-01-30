@@ -1,4 +1,5 @@
 import { Form, Input, Select } from "antd";
+import { useEffect } from "react";
 
 interface QuizBasicInfoProps {
     title: string;
@@ -18,6 +19,10 @@ const QuizBasicInfo = ({
     onUpdate,
 }: QuizBasicInfoProps) => {
     const [form] = Form.useForm();
+
+    // useEffect(() => {
+    //     let presentCategories = await fetch("https://quizzler-backend-1.onrender.com/api/categories")
+    //     });
 
     const handleValuesChange = (_: any, allValues: any) => {
         onUpdate(allValues);
