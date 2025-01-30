@@ -21,7 +21,7 @@ Quizzler jest stroną, gdzie użytkownicy mogą rozwiązywać quizy oraz dodawa�
 
 ## Użyte technologie i biblioteki
 
-- Mikroserwisy: Node.js
+- Backend: Express
 - Frontend: React, CSS, Ant Design
 
 ## Screenshoty z Projektu
