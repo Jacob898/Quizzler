@@ -67,6 +67,7 @@ export default function QuizQuestions({
                     <div className="space-y-4">
                         {fields.map((field, questionIndex) => (
                             <Card
+                                style={{ marginBottom: "20px" }}
                                 key={field.key}
                                 title={`Pytanie ${questionIndex + 1}`}
                                 extra={

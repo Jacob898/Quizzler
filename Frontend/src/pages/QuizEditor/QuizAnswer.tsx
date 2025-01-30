@@ -21,6 +21,7 @@ export default function QuizAnswer({
 }: QuizAnswerProps) {
     return (
         <Card
+            style={{ marginBottom: "20px" }}
             size="small"
             extra={
                 <Button
