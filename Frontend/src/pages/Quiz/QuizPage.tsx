@@ -12,6 +12,7 @@ const QuizPage = () => {
     const [reviews, setReviews] = useState([]);
     const [newComment, setNewComment] = useState("");
     const [rating, setRating] = useState(1);
+    const [adminsId, setAdminsId] = useState([4]);
 
     let params = useParams();
     const quizId = params.quizId;
@@ -88,6 +89,28 @@ const QuizPage = () => {
                 console.error("Error fetching reviews:", error);
             }
         };
+        const fetchAdminsId = async () => {
+            try {
+                let adminIdURL = `https://quizzler-backend-1.onrender.com/api/admin/admins`;
+                const response = await fetch(adminIdURL, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization:
+                            `Bearer ${localStorage.getItem("token")}` || "",
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch reviews");
+                }
+                const data = await response.json();
+                setAdminsId(data);
+            } catch (error) {
+                console.error("Error fetching reviews:", error);
+            }
+        };
+
+        fetchAdminsId();
         fetchQuizData();
         fetchReviews();
     }, [quizId]);
@@ -330,7 +353,10 @@ const QuizPage = () => {
                                                 review.createdAt
                                             ).toLocaleString()}
                                         </p>
-                                        {review.User.email === username && (
+                                        {(review.User.email === username ||
+                                            adminsId.includes(
+                                                Number(user_id)
+                                            )) && (
                                             <Button
                                                 onClick={() =>
                                                     handleDeleteReview(
