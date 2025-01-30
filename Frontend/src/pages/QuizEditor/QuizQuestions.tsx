@@ -68,7 +68,7 @@ export default function QuizQuestions({
                         {fields.map((field, questionIndex) => (
                             <Card
                                 key={field.key}
-                                title={`Question ${questionIndex + 1}`}
+                                title={`Pytanie ${questionIndex + 1}`}
                                 extra={
                                     <Button
                                         type="text"
@@ -88,11 +88,11 @@ export default function QuizQuestions({
                                             {
                                                 required: true,
                                                 message:
-                                                    "Please input question title!",
+                                                    "Wprowadź treść pytania!",
                                             },
                                         ]}
                                     >
-                                        <Input placeholder="Question title" />
+                                        <Input placeholder="Treść pytania" />
                                     </Form.Item>
 
                                     <Form.Item
@@ -101,11 +101,11 @@ export default function QuizQuestions({
                                             {
                                                 type: "url",
                                                 message:
-                                                    "Please enter a valid URL!",
+                                                    "Wprowdź prawidłowy URL obrazka!",
                                             },
                                         ]}
                                     >
-                                        <Input placeholder="Question image URL" />
+                                        <Input placeholder="URL pytania" />
                                     </Form.Item>
 
                                     <Form.List name={[field.name, "answers"]}>
@@ -146,7 +146,7 @@ export default function QuizQuestions({
                                                     block
                                                     icon={<PlusOutlined />}
                                                 >
-                                                    Add Answer
+                                                    Dodaj odpowiedź
                                                 </Button>
                                             </div>
                                         )}
@@ -162,7 +162,7 @@ export default function QuizQuestions({
                             block
                             icon={<PlusOutlined />}
                         >
-                            Add Question
+                            Dodaj pytanie
                         </Button>
                     </div>
                 )}

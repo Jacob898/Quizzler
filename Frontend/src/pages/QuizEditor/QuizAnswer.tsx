@@ -34,10 +34,10 @@ export default function QuizAnswer({
             <Form.Item
                 name={[answerField.name, "text"]}
                 rules={[
-                    { required: true, message: "Please input answer text!" },
+                    { required: true, message: "Wprowadź treść odpowiedzi!" },
                 ]}
             >
-                <Input placeholder="Answer text" />
+                <Input placeholder="Treść odpowiedzi" />
             </Form.Item>
 
             <div className="space-y-2">

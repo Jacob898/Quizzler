@@ -1,5 +1,5 @@
 import { Form, Input, Select } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface QuizBasicInfoProps {
     title: string;
@@ -19,10 +19,26 @@ const QuizBasicInfo = ({
     onUpdate,
 }: QuizBasicInfoProps) => {
     const [form] = Form.useForm();
+    const [presentCategories, setPresentCategories] = useState<string[]>([]);
 
-    // useEffect(() => {
-    //     let presentCategories = await fetch("https://quizzler-backend-1.onrender.com/api/categories")
-    //     });
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch(
+                    "https://quizzler-backend-1.onrender.com/api/categories"
+                );
+                const data = await response.json();
+                setPresentCategories(
+                    data.map((category: any) => category.category)
+                );
+                console.log("Categories fetched:", data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     const handleValuesChange = (_: any, allValues: any) => {
         onUpdate(allValues);
@@ -60,6 +76,10 @@ const QuizBasicInfo = ({
                     mode="tags"
                     placeholder="Dodaj kategorie"
                     style={{ width: "100%" }}
+                    options={presentCategories.map((category) => ({
+                        value: category,
+                        label: category,
+                    }))}
                 />
             </Form.Item>
         </Form>
