@@ -23,3 +23,32 @@ Quizzler jest stroną, gdzie użytkownicy mogą rozwiązywać quizy oraz dodawa�
 
 - Mikroserwisy: Node.js
 - Frontend: React, CSS, Ant Design
+
+## Screenshoty z Projektu
+
+### Strona główna
+
+<img src="readme_photos/mainFeatured.png">
+
+### Profil użytkownika
+
+<img src="readme_photos/profile.png">
+
+### Wyniki wyszukiwania
+
+<img src="readme_photos/searchResults.png">
+
+### Widok kategorii
+
+<img src="readme_photos/CategoryView.png">
+
+### Tworzenie quizu
+
+<img src="readme_photos/quizMaking.png">
+
+### Strona quizu
+
+<img src="readme_photos/quizDetails.png">
+
+
+
