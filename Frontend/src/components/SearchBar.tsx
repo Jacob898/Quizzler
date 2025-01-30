@@ -116,12 +116,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
             itemLayout="vertical"
             dataSource={filteredQuizzes}
             renderItem={(quiz) => (
-              <List.Item key={quiz.quiz_id} style={{ padding: "8px 16px" }}>
+              <List.Item key={quiz.quiz_id} style={{ padding: "2px 0px" }}>
                 <Link to={`/quiz/${quiz.quiz_id}`} onClick={onItemSelect}>
                   <Card hoverable style={{ width: "100%", margin: 0 }}>
                     <Card.Meta
-                      title={quiz.name}
-                      description={quiz.description}
+                      title={
+                        <span style={{ fontSize: "12px" }}>{quiz.name}</span>
+                      }
                     />
                   </Card>
                 </Link>
