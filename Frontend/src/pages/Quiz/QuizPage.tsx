@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Layout, Input, Rate, Card } from "antd";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../../components/PageHeader.tsx";
 import PageFooter from "../../components/PageFooter.tsx";
 import "./QuizPage.css";
@@ -15,6 +15,7 @@ const QuizPage = () => {
     const [adminsId, setAdminsId] = useState([4]);
 
     let params = useParams();
+    let navigate = useNavigate();
     const quizId = params.quizId;
 
     const [username, setUsername] = useState("");
@@ -199,6 +200,28 @@ const QuizPage = () => {
         }
     };
 
+    const handleDeleteQuiz = async () => {
+        try {
+            const response = await fetch(
+                `https://quizzler-backend-1.onrender.com/api/quizzes/${quizId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization:
+                            `Bearer ${localStorage.getItem("token")}` || "",
+                    },
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Failed to delete review");
+            }
+            navigate("/");
+        } catch (error) {
+            console.error("Error deleting review:", error);
+        }
+    };
+
     const getRatingClass = (value) => {
         if (value >= 4) return "high-rating";
         if (value >= 2) return "medium-rating";
@@ -279,6 +302,26 @@ const QuizPage = () => {
                                     Rozwiąż quiz
                                 </Link>
                             </Button>
+                            {adminsId.includes(Number(user_id)) ? (
+                                <Button
+                                    type="primary"
+                                    className="solve-quiz-button"
+                                    onClick={() => {
+                                        if (
+                                            window.confirm(
+                                                "Czy na pewno chcesz usunąć quiz?"
+                                            )
+                                        ) {
+                                            console.log("Usuwam quiz");
+                                            handleDeleteQuiz();
+                                        }
+                                    }}
+                                >
+                                    Usuń quiz
+                                </Button>
+                            ) : (
+                                <></>
+                            )}
                         </div>
                         <div
                             style={{
