@@ -1,4 +1,3 @@
-/* Ustawienie tła dla całej aplikacji */
 html,
 body {
   height: 100%;
@@ -9,32 +8,27 @@ body {
   color: white !important;
 }
 
-/* Stylowanie nagłówka */
 .ant-layout-header {
   background-color: #052b05 !important;
   background-color: !important;
   color: white !important;
 }
 
-/* Usunięcie żółtego fragmentu w headerze */
 .ant-layout-header * {
   color: white !important;
   background-color: transparent !important;
 }
 
-/* Stylowanie stopki */
 .ant-layout-footer {
   background-color: #052b05 !important;
   color: white !important;
 }
 
-/* Zmiana koloru linków na biały */
 a {
   color: white !important;
   text-decoration: none;
 }
 
-/* Zmiana koloru napisów na biały */
 h1,
 h2,
 h3,
@@ -47,19 +41,16 @@ span {
   color: white !important;
 }
 
-/* Zmiana koloru przycisków */
 .ant-btn {
   background-color: rgb(8, 23, 12) !important;
   color: white !important;
 }
 
-/* Stylowanie hover dla przycisków */
 .ant-btn:hover {
   background-color: rgb(41, 48, 43) !important;
   color: rgb(255, 255, 255) !important;
 }
 
-/* Usunięcie domyślnego białego tła dla layoutów */
 .ant-layout {
   min-height: 100vh;
   width: 100vw;
@@ -72,23 +63,16 @@ span {
   background: transparent !important;
 }
 
-/* Dostosowanie listy kategorii i quizów do tła */
 .ant-card,
 .ant-card-body {
   background: rgba(0, 0, 0, 0.5) !important;
   color: white !important;
 }
 
-/* Poprawienie czytelności na ciemnym tle */
 .ant-card-title {
   color: white !important;
 }
 
-/* Stylowanie dividerów */
-/* .ant-divider {
-  background-color: white !important;
-} */
-/* Search bar na biało */
 .ant-input {
   background-color: rgb(8, 23, 12) !important;
   color: rgb(255, 255, 255) !important;
@@ -96,7 +80,7 @@ span {
 }
 
 .ant-input::placeholder {
-  color: #666 !important; /* Zmiana koloru tekstu w placeholderze */
+  color: #666 !important;
 }
 
 .ant-input-affix-wrapper {
@@ -105,7 +89,6 @@ span {
   box-shadow: none !important;
 }
 
-/* Usunięcie białych obramówek */
 .ant-btn,
 .ant-input,
 .ant-input-affix-wrapper {
@@ -113,13 +96,12 @@ span {
   outline: none !important;
   box-shadow: none !important;
 }
-/* Zmiana koloru tekstu w nagłówku */
+
 .ant-layout-header {
   background-color: #0a410a !important;
   color: white !important;
 }
 
-/* Stylowanie przycisków w nagłówku */
 .ant-layout-header button {
   color: white !important;
   background: none !important;
@@ -128,7 +110,6 @@ span {
   cursor: pointer;
 }
 
-/* Stylowanie nagłówka */
 .ant-layout-header {
   background-color: #0a410a !important;
   color: white !important;
@@ -161,7 +142,6 @@ span {
   margin: 0 auto;
 }
 
-/* Zapobieganie poziomemu przewijaniu */
 html,
 body {
   overflow-x: hidden !important;
@@ -169,14 +149,12 @@ body {
   height: 100%;
 }
 
-/* Ustawienie szerokości layoutu na 100% */
 .ant-layout {
   width: 100vw !important;
   max-width: 100vw !important;
   overflow-x: hidden !important;
 }
 
-/* Główna zawartość */
 .ant-layout-content {
   width: 100%;
   max-width: 100vw !important;
@@ -184,14 +162,12 @@ body {
   background: transparent !important;
 }
 
-/* Poprawienie wyglądu kontenerów */
 .container {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden !important;
 }
 
-/* Usunięcie marginesów powodujących przewijanie */
 * {
   margin: 0;
   padding: 0;

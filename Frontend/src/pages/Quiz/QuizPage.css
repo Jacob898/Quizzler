@@ -1,0 +1,72 @@
+.custom-rate.high-rating .ant-rate-star-full path {
+  fill: #3b950d !important;
+}
+
+.custom-rate.medium-rating .ant-rate-star-full path {
+  fill: #a55e13 !important;
+}
+
+.custom-rate.low-rating .ant-rate-star-full path {
+  fill: #74050a !important;
+}
+
+.custom-rate.high-rating .ant-rate-star:hover path,
+.custom-rate.high-rating .ant-rate-star:hover ~ .ant-rate-star path {
+  fill: #308008 !important;
+}
+
+.custom-rate.medium-rating .ant-rate-star:hover path,
+.custom-rate.medium-rating .ant-rate-star:hover ~ .ant-rate-star path {
+  fill: #844b0e !important;
+}
+
+.custom-rate.low-rating .ant-rate-star:hover path,
+.custom-rate.low-rating .ant-rate-star:hover ~ .ant-rate-star path {
+  fill: #74050a !important;
+}
+
+.comment-container {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-description {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-description .ant-btn-primary {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.quiz-description .ant-btn-primary:hover {
+  background-color: #f0f0f0;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+.comment-container p {
+  margin: 5px 0;
+}
+
+.comment-container .ant-btn-danger {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: #ffffff;
+}
