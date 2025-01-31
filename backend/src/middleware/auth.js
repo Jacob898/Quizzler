@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import Admin from "../models/Admin.js";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
-const JWT_REFRESH_SECRET =
+export const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+export const JWT_REFRESH_SECRET =
     process.env.JWT_REFRESH_SECRET || "your-refresh-secret-key";
 
 export const generateTokens = (userId) => {

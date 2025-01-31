@@ -67,4 +67,23 @@ router.delete(
     }
 );
 
+router.get("/admins", authenticateToken, async (req, res) => {
+    try {
+        const admins = await Admin.findAll({
+            include: [
+                {
+                    model: User,
+                    attributes: ["email"],
+                },
+            ],
+        });
+        res.json(admins.map((admin) => admin.user_id));
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch admins",
+            error: error.message,
+        });
+    }
+});
+
 export default router;

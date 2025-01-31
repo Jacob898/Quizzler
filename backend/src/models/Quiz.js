@@ -16,7 +16,7 @@ const Quiz = sequelize.define("Quiz", {
         type: DataTypes.TEXT,
     },
     img_url: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
     },
     user_id: {

@@ -15,7 +15,7 @@ const Category = sequelize.define(
             unique: true,
         },
         img_url: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.TEXT,
             allowNull: true,
         },
     },

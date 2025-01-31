@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ff14bd2c-4a65-4cb4-8195-d679b4fba3b9",
+		"_postman_id": "2bdf791c-0a5e-40cb-aa10-010fa3f69b62",
 		"name": "Quizzler API",
 		"description": "Collection for testing Quizzler API endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+							"raw": "{\n    \"email\": \"test11\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/register",
@@ -49,7 +49,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+							"raw": "{\n    \"email\": \"test\",\n    \"password\": \"password123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
@@ -76,7 +76,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczNzcyMDgwNCwiZXhwIjoxNzM4MzI1NjA0fQ.wjWeyyBqdTdE7DTg6V0ARJrr4OKOoTnspgKIT47ahsU\"\n}"
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczODE3NDM0NSwiZXhwIjoxNzM4Nzc5MTQ1fQ.-KRwrdA9uygaUr_IBEkh3gSLaYN_Y_D3txyVoip__BY\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/refresh-token",
@@ -86,6 +86,288 @@
 							"path": [
 								"auth",
 								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login root",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"root@example.com\",\n    \"password\": \"Krakra5?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"updated@example.com\",\n    \"img_url\": \"https://example.com/new-avatar.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/profile/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Image",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"img_url\": \"https://example.com/new-avatar.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/image",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"image"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Add Admin (Root Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Admins Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/admins",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Admin (Root Only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/remove/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"remove",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"Programming11\",\n    \"img_url\": \"https://example.com/category.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"1"
 							]
 						}
 					},
@@ -112,7 +394,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"JavaScript Basics\",\n    \"description\": \"Test your JavaScript knowledge\"\n}"
+							"raw": "{\n    \"name\": \"JavaScript Basics\",\n    \"description\": \"Test your JavaScript knowledge\",\n    \"img_url\": \"https://example.com/quiz.jpg\",\n    \"categoryIds\": [1]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/quizzes",
@@ -121,6 +403,37 @@
 							],
 							"path": [
 								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete quiz",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/quizzes/15",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quizzes",
+								"15"
 							]
 						}
 					},
@@ -144,79 +457,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Quiz by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/quizzes/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"quizzes",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Reviews",
-			"item": [
-				{
-					"name": "Create Review",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"quiz_id\": 1,\n    \"stars\": 5,\n    \"comment\": \"Great quiz!\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/reviews",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Quiz Reviews",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/reviews/quiz/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"reviews",
-								"quiz",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Review",
+					"name": "Update Quiz Categories",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -231,39 +472,157 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"stars\": 4,\n    \"comment\": \"Updated review comment\"\n}"
+							"raw": "{\n    \"categoryIds\": [1, 3]\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/reviews/1",
+							"raw": "{{base_url}}/quizzes/1/categories",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"reviews",
-								"1"
+								"quizzes",
+								"1",
+								"categories"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Review",
+					"name": "Solve Quiz",
 					"request": {
-						"method": "DELETE",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/reviews/1",
+							"raw": "{{base_url}}/quizzes/1/solve",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"reviews",
-								"1"
+								"quizzes",
+								"1",
+								"solve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Quiz details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/quizzes/1/details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quizzes",
+								"1",
+								"details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create whole quiz",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Czy jesteś sigmmmmmą?\",\n  \"img_url\": \"\",\n  \"categories\": [\n    \"Sigma\",\n    \"Rizz\"\n  ],\n  \"results\": [\n    {\n      \"title\": \"Tak\",\n      \"description\": \"TAK, jesteś sigmą.\",\n      \"img_url\": \"\",\n      \"id\": 1738068016666\n    },\n    {\n      \"title\": \"Nie\",\n      \"description\": \"Nie, nie jesteś sigmą.\",\n      \"img_url\": \"\",\n      \"id\": 1738068030843\n    }\n  ],\n  \"questions\": [\n    {\n      \"title\": \"Czy jesteś rizzlerem?\",\n      \"img_url\": \"\",\n      \"answers\": [\n        {\n          \"text\": \"Tak\",\n          \"resultPoints\": {\n            \"1738068016666\": 5,\n            \"1738068030843\": -4\n          },\n          \"id\": 1738068077732\n        },\n        {\n          \"text\": \"Nie\",\n          \"resultPoints\": {\n            \"1738068016666\": -7,\n            \"1738068030843\": 5\n          },\n          \"id\": 1738068086951\n        }\n      ],\n      \"id\": 1738068060166\n    },\n    {\n      \"title\": \"Czy masz sigma male aura?\",\n      \"img_url\": \"\",\n      \"answers\": [\n        {\n          \"text\": \"Tak\",\n          \"resultPoints\": {\n            \"1738068016666\": 6,\n            \"1738068030843\": 0\n          },\n          \"id\": 1738068145971\n        },\n        {\n          \"text\": \"Nie\",\n          \"resultPoints\": {\n            \"1738068016666\": -4,\n            \"1738068030843\": 9\n          },\n          \"id\": 1738068149976\n        }\n      ],\n      \"id\": 1738068098617\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/quizzes/complete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quizzes",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit quiz answers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quizId\": 1,\n  \"answers\": {\n    \"6\": 7\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/quizzes/7/submit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"quizzes",
+								"7",
+								"submit"
 							]
 						}
 					},
@@ -272,10 +631,10 @@
 			]
 		},
 		{
-			"name": "Quiz History",
+			"name": "Quiz Answers",
 			"item": [
 				{
-					"name": "Record Quiz Attempt",
+					"name": "Create Answer",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -290,84 +649,210 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"quiz_id\": 1,\n    \"quiz_result_id\": 1\n}"
+							"raw": "{\n    \"questions_quiz_question_id\": 1,\n    \"answer\": \"JavaScript 23\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/quiz-history",
+							"raw": "{{base_url}}/quiz-answers",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"quiz-history"
+								"quiz-answers"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get User Quiz History",
+					"name": "Get Answers for Question",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "{{base_url}}/quiz-history/user",
+							"raw": "{{base_url}}/quiz-answers/question/6",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"quiz-history",
-								"user"
+								"quiz-answers",
+								"question",
+								"6"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Specific Quiz History Entry",
+					"name": "Create Answer Details",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
 							{
 								"key": "Authorization",
 								"value": "Bearer {{token}}"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quiz_answer_id\": 2,\n    \"quiz_result_id\": 1,\n    \"points\": -10\n}"
+						},
 						"url": {
-							"raw": "{{base_url}}/quiz-history/2",
+							"raw": "{{base_url}}/quiz-answers/details",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"quiz-history",
-								"2"
+								"quiz-answers",
+								"details"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get User Quiz Results and Reviews",
+					"name": "Get Answer Details for Result",
 					"request": {
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/quiz-answers/details/result/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quiz-answers",
+								"details",
+								"result",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Answer",
+					"request": {
+						"method": "PUT",
 						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
 							{
 								"key": "Authorization",
 								"value": "Bearer {{token}}"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"answer\": \"Updated Answer\"\n}"
+						},
 						"url": {
-							"raw": "{{base_url}}/quiz-history/user-results",
+							"raw": "{{base_url}}/quiz-answers/1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"quiz-history",
-								"user-results"
+								"quiz-answers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Answer Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"points\": 15\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/quiz-answers/details/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quiz-answers",
+								"details",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quiz Question",
+			"item": [
+				{
+					"name": "Create Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quiz_id\": 1,\n    \"question\": \"Question 2 test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/quiz-questions/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quiz-questions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Questions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/quiz-questions/quiz/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quiz-questions",
+								"quiz",
+								"1"
 							]
 						}
 					},
@@ -379,22 +864,29 @@
 			"name": "Quiz Results",
 			"item": [
 				{
-					"name": "Create Quiz Result",
+					"name": "Question Result",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"quiz_id\": 1,\n    \"title\": \"Expert\",\n    \"description\": \"You are sigma too\"\n}"
+							"raw": "{\n    \"quiz_id\": 1,\n    \"title\": \"Res 2\",\n    \"description\": \"DESC ! RSADS\",\n    \"img_url\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{base_url}}/quiz-results",
@@ -409,7 +901,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Quiz Results for a Quiz",
+					"name": "Get Questions Copy",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -426,74 +918,159 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Quiz review",
+			"item": [
 				{
-					"name": "Get Specific Quiz Result",
+					"name": "Get Quiz Reviews",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/quiz-results/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"quiz-results",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Quiz Result",
-					"request": {
-						"method": "PUT",
 						"header": [
 							{
-								"key": "Content-Type",
-								"value": "application/json"
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Bruh\",\n    \"description\": \"Bruh description\"\n}"
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
-							"raw": "{{base_url}}/quiz-results/1",
+							"raw": "{{base_url}}/reviews/quiz/7",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"quiz-results",
-								"1"
+								"reviews",
+								"quiz",
+								"7"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Quiz Result",
+					"name": "Post Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quiz_id\": 1,\n    \"stars\": 3,\n    \"comment\": \"XD\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Review",
 					"request": {
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{token}}"
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quiz_id\": 1,\n    \"stars\": 3,\n    \"comment\": \"XD\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{base_url}}/quiz-results/1",
+							"raw": "{{base_url}}/reviews/29",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"quiz-results",
-								"1"
+								"reviews",
+								"29"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "quiz history",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/quiz-history/user-results/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quiz-history",
+								"user-results",
+								"2"
 							]
 						}
 					},

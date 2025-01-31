@@ -25,7 +25,7 @@ const QuizResult = sequelize.define("QuizResult", {
         allowNull: true,
     },
     img_url: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
     },
 });

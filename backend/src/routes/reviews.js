@@ -1,7 +1,8 @@
 import express from "express";
-import { authenticateToken, isAdmin } from "../middleware/auth.js";
+import { authenticateToken } from "../middleware/auth.js";
 import Review from "../models/Review.js";
 import User from "../models/User.js";
+import Admin from "../models/Admin.js";
 
 const router = express.Router();
 
@@ -83,7 +84,7 @@ router.delete("/:id", authenticateToken, async (req, res) => {
         // Check if user is admin or review owner
         const isOwner = review.user_id === req.user.userId;
         const admin = await Admin.findOne({
-            where: { Users_user_id: req.user.userId },
+            where: { user_id: req.user.userId },
         });
 
         if (!isOwner && !admin) {
