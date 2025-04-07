@@ -8,7 +8,7 @@ Project on Introduction to Web Applications course on AGH University of Krakow
 
 ## Project Description
 
-Quizzler is a website where users can solve quizzes and add their own.
+Quizzler is a website where users can solve and add their own quizzes.
 
 ## Application Features
 
